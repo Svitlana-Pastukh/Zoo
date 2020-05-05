@@ -1,6 +1,11 @@
 package org.park.zoo.animals;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Animal {
+
+    private static final Logger logger = LogManager.getLogger(Animal.class);
 
     String name;
     int age;
@@ -19,7 +24,7 @@ public class Animal {
     }
 
     public void drinkWater() {
-        System.out.println("Animal drinks");
+        logger.info("Animal drinks");
     }
 
     @Override

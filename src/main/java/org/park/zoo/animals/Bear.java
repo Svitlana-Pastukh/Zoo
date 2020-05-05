@@ -1,8 +1,13 @@
 package org.park.zoo.animals;
 
 
-public class Bear extends Animal implements Herbivorous,Carnivore {
-    String color;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class Bear extends Animal implements Herbivorous, Carnivore {
+
+    private static final Logger logger = LogManager.getLogger(Bear.class);
+    private final String color;
     private boolean hibernating;
 
     public Bear(String name, int age, String country, int minTemperature, int maxTemperature, int weight, String color) {
@@ -11,22 +16,23 @@ public class Bear extends Animal implements Herbivorous,Carnivore {
     }
 
     public void startHibernate() {
-        System.out.println("Bear " + name + " started hibernating");
-        hibernating=true;
+        logger.info("Bear " + name + " started hibernating");
+        hibernating = true;
     }
 
-    public void stopHibernate(){
-        System.out.println("Bear " + name + " stopped hibernating ");
-        hibernating=false;
+    public void stopHibernate() {
+        logger.info("Bear " + name + " stopped hibernating ");
+        hibernating = false;
     }
 
-    public boolean getHibernate(){
+    public boolean getHibernate() {
         return hibernating;
 
     }
+
     @Override
     public void drinkWater() {
-        System.out.println("Bear " + name + " drinks water ");
+        logger.info("Bear " + name + " drinks water ");
     }
 
     @Override

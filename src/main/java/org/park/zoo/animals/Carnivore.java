@@ -1,8 +1,13 @@
 package org.park.zoo.animals;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public interface Carnivore {
 
+    Logger logger = LogManager.getLogger(Carnivore.class);
+
     default void eatMeat(){
-        System.out.println("Animal ate meat ");
+        logger.info("Animal ate meat ");
     }
 }

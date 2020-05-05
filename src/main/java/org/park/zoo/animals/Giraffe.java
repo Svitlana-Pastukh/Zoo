@@ -1,6 +1,11 @@
 package org.park.zoo.animals;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Giraffe extends Animal implements Herbivorous {
+
+    private static final Logger logger = LogManager.getLogger(Giraffe.class);
 
     public Giraffe(String name, int age, String country, int minTemperature, int maxTemperature, int weight) {
         super(name, age, country, minTemperature, maxTemperature, weight);
@@ -8,7 +13,7 @@ public class Giraffe extends Animal implements Herbivorous {
 
     @Override
     public void drinkWater() {
-        System.out.println("Giraffe " + name + " drinks water" );
+        logger.info("Giraffe " + name + " drinks water" );
     }
 
 
