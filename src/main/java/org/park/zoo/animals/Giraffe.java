@@ -2,8 +2,9 @@ package org.park.zoo.animals;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.park.Insertable;
 
-public class Giraffe extends Animal implements Herbivorous {
+public class Giraffe extends Animal implements Herbivorous, Insertable {
 
     private static final Logger logger = LogManager.getLogger(Giraffe.class);
 
@@ -13,7 +14,22 @@ public class Giraffe extends Animal implements Herbivorous {
 
     @Override
     public void drinkWater() {
-        logger.info("Giraffe " + name + " drinks water" );
+        logger.info("Giraffe " + name + " drinks water");
+    }
+
+    @Override
+    public String createInsertQuery() {
+        return String.format("INSERT INTO animals(" +
+                        "animal_type," +
+                        "name," +
+                        "age," +
+                        "country," +
+                        "minTemperature," +
+                        "maxTemperature," +
+                        "weight," +
+                        "color)" +
+                        "VALUES ('%s', '%s', %s, '%s', %s, %s, %s, %s);",
+                getClass().getSimpleName(), name, age, country, minTemperature, maxTemperature, weight, null);
     }
 
 

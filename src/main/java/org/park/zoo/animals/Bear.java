@@ -3,8 +3,9 @@ package org.park.zoo.animals;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.park.Insertable;
 
-public class Bear extends Animal implements Herbivorous, Carnivore {
+public class Bear extends Animal implements Herbivorous, Carnivore, Insertable {
 
     private static final Logger logger = LogManager.getLogger(Bear.class);
     private final String color;
@@ -33,6 +34,22 @@ public class Bear extends Animal implements Herbivorous, Carnivore {
     @Override
     public void drinkWater() {
         logger.info("Bear " + name + " drinks water ");
+    }
+
+
+    @Override
+    public String createInsertQuery() {
+        return String.format("INSERT INTO animals(" +
+                        "animal_type," +
+                        "name," +
+                        "age," +
+                        "country," +
+                        "minTemperature," +
+                        "maxTemperature," +
+                        "weight," +
+                        "color)" +
+                        "VALUES ('%s', '%s', %s, '%s', %s, %s, %s, '%s');",
+                getClass().getSimpleName(), name, age, country, minTemperature, maxTemperature, weight, color);
     }
 
     @Override
