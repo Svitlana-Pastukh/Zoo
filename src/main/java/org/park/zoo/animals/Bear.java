@@ -16,6 +16,11 @@ public class Bear extends Animal implements Herbivorous, Carnivore, Insertable {
         this.color = color;
     }
 
+    public Bear(String id, String name, int age, String country, int minTemperature, int maxTemperature, int weight, String color) {
+        super(id, name, age, country, minTemperature, maxTemperature, weight);
+        this.color = color;
+    }
+
     public void startHibernate() {
         logger.info("Bear " + name + " started hibernating");
         hibernating = true;
@@ -41,6 +46,7 @@ public class Bear extends Animal implements Herbivorous, Carnivore, Insertable {
     public String createInsertQuery() {
         return String.format("INSERT INTO animals(" +
                         "animal_type," +
+                        "id," +
                         "name," +
                         "age," +
                         "country," +
@@ -48,9 +54,10 @@ public class Bear extends Animal implements Herbivorous, Carnivore, Insertable {
                         "maxTemperature," +
                         "weight," +
                         "color)" +
-                        "VALUES ('%s', '%s', %s, '%s', %s, %s, %s, '%s');",
-                getClass().getSimpleName(), name, age, country, minTemperature, maxTemperature, weight, color);
+                        "VALUES ('%s', '%s', '%s', %s, '%s', %s, %s, %s, '%s');",
+                getClass().getSimpleName(), getId(), name, age, country, minTemperature, maxTemperature, weight, color);
     }
+
 
     @Override
     public String toString() {

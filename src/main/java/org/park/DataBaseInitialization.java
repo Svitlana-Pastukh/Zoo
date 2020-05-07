@@ -1,6 +1,7 @@
 package org.park;
 
 import org.park.zoo.animals.*;
+import org.park.zoo.animals.exceptions.AnimalDoesNotExist;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,9 +12,9 @@ public class DataBaseInitialization {
     private static final String url = "jdbc:h2:mem:";
 
     public static void main(String[] args) {
-
-
         createAnimalsTable();
+
+
     }
 
     public static void createAnimalsTable() {
@@ -23,6 +24,7 @@ public class DataBaseInitialization {
 
             statement.execute("CREATE TABLE animals( " +
                     "animal_type TEXT," +
+                    "id TEXT," +
                     "name TEXT," +
                     "age int," +
                     "country TEXT," +
@@ -46,18 +48,19 @@ public class DataBaseInitialization {
 
             insertAnimals(animals, statement);
 
-            ResultSet rs = statement.executeQuery("SELECT * FROM animals");
-
-            while (rs.next()) {
-                System.out.println();
-                System.out.print(" " + rs.getString(1));
-                System.out.print(" " + rs.getString(2));
-                System.out.print(" " + rs.getString(8));
-
-            }
+            Animal a = selectOneAnimal(bear.getId(), statement);
+            selectAllAnimals(statement).forEach(e-> System.out.println(e));
 
 
-        } catch (SQLException e) {
+//            while (rs.next()) {
+//                System.out.println();
+//                System.out.print(" " + rs.getString(1));
+//                System.out.print(" " + rs.getString(2));
+//            }
+            System.out.println(a.toString());
+
+
+        } catch (SQLException | AnimalDoesNotExist e) {
             e.printStackTrace();
         }
 
@@ -70,4 +73,58 @@ public class DataBaseInitialization {
             }
         }
     }
+
+    public static Animal selectOneAnimal(String id, Statement statement) throws SQLException, AnimalDoesNotExist {
+
+        ResultSet rs = statement.executeQuery(String.format("SELECT * FROM animals WHERE id='%s'", id));
+
+        if (rs.next()) {
+            if (rs.getString(1).equalsIgnoreCase("Lion")) {
+                return new Lion(rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+                        rs.getInt(6), rs.getInt(7), rs.getInt(8));
+            } else if (rs.getString(1).equalsIgnoreCase("Giraffe")) {
+                return new Giraffe(rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+                        rs.getInt(6), rs.getInt(7), rs.getInt(8));
+            } else if (rs.getString(1).equalsIgnoreCase("Zebra")) {
+                return new Zebra(rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+                        rs.getInt(6), rs.getInt(7), rs.getInt(8));
+            } else if (rs.getString(1).equalsIgnoreCase("Wolf")) {
+                return new Wolf(rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+                        rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9));
+            } else if (rs.getString(1).equalsIgnoreCase("Bear")) {
+                return new Bear(rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+                        rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9));
+            } else {
+                throw new AnimalDoesNotExist("No animal available of class:" + rs.getString(1));
+            }
+        } else {
+            throw new AnimalDoesNotExist("No animal available with id:" + id);
+        }
+    }
+
+    public static List<Animal> selectAllAnimals(Statement statement) throws SQLException {
+        ResultSet rs = statement.executeQuery(String.format("SELECT * FROM animals"));
+        List<Animal> animals = new ArrayList<>();
+        while (rs.next()) {
+            if (rs.getString(1).equalsIgnoreCase("Lion")) {
+                animals.add(new Lion(rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+                        rs.getInt(6), rs.getInt(7), rs.getInt(8)));
+            } else if (rs.getString(1).equalsIgnoreCase("Giraffe")) {
+                animals.add(new Giraffe(rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+                        rs.getInt(6), rs.getInt(7), rs.getInt(8)));
+            } else if (rs.getString(1).equalsIgnoreCase("Zebra")) {
+                animals.add(new Zebra(rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+                        rs.getInt(6), rs.getInt(7), rs.getInt(8)));
+            } else if (rs.getString(1).equalsIgnoreCase("Wolf")) {
+                animals.add(new Wolf(rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+                        rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9)));
+            } else if (rs.getString(1).equalsIgnoreCase("Bear")) {
+                animals.add(new Bear(rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+                        rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9)));
+            }
+        }
+        return animals;
+    }
 }
+
+

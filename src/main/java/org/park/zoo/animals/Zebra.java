@@ -11,6 +11,10 @@ public class Zebra extends Animal implements Herbivorous, Insertable {
         super(name, age, country, minTemperature, maxTemperature, weight);
     }
 
+    public Zebra(String id, String name, int age, String country, int minTemperature, int maxTemperature, int weight) {
+        super(id, name, age, country, minTemperature, maxTemperature, weight);
+    }
+
     @Override
     public void drinkWater() {
         logger.info("Zebra " + name + "drinks water");
@@ -20,6 +24,7 @@ public class Zebra extends Animal implements Herbivorous, Insertable {
     public String createInsertQuery() {
         return String.format("INSERT INTO animals(" +
                         "animal_type," +
+                        "id," +
                         "name," +
                         "age," +
                         "country," +
@@ -27,7 +32,8 @@ public class Zebra extends Animal implements Herbivorous, Insertable {
                         "maxTemperature," +
                         "weight," +
                         "color)" +
-                        "VALUES ('%s', '%s', %s, '%s', %s, %s, %s, %s);",
-                getClass().getSimpleName(), name, age, country, minTemperature, maxTemperature, weight, null);
+                        "VALUES ('%s', '%s', '%s', %s, '%s', %s, %s, %s, %s);",
+                getClass().getSimpleName(), getId(), name, age, country, minTemperature, maxTemperature, weight, null);
     }
+
 }
