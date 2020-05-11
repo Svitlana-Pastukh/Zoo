@@ -1,11 +1,16 @@
 package org.park.zoo.animals;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.park.Insertable;
 
+@JsonTypeName("Wolf")
 public class Wolf extends Animal implements Carnivore, Insertable {
-    private final Logger logger = LogManager.getLogger(Wolf.class);
+    private static final Logger logger = LogManager.getLogger(Wolf.class);
+    @JsonProperty("@type")
+    private final String type = "Wolf";
     private final String color;
 
     public Wolf(String name, int age, String country, int minTemperature, int maxTemperature, int weight, String color) {
@@ -16,6 +21,10 @@ public class Wolf extends Animal implements Carnivore, Insertable {
     public Wolf(String id, String name, int age, String country, int minTemperature, int maxTemperature, int weight, String color) {
         super(id, name, age, country, minTemperature, maxTemperature, weight);
         this.color = color;
+    }
+
+    private Wolf() {
+        color = "Black";
     }
 
     @Override
@@ -43,13 +52,13 @@ public class Wolf extends Animal implements Carnivore, Insertable {
     @Override
     public String toString() {
         return "Wolf{" +
+                "color='" + color + '\'' +
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", country='" + country + '\'' +
                 ", minTemperature=" + minTemperature +
                 ", maxTemperature=" + maxTemperature +
                 ", weight=" + weight +
-                ", color='" + color + '\'' +
                 '}';
     }
 }

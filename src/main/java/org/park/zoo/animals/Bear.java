@@ -1,24 +1,40 @@
 package org.park.zoo.animals;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.park.Insertable;
 
+@JsonTypeName("Bear")
 public class Bear extends Animal implements Herbivorous, Carnivore, Insertable {
 
     private static final Logger logger = LogManager.getLogger(Bear.class);
+
+    @JsonProperty("@type")
+    private final String type = "Bear";
+
+
+
     private final String color;
     private boolean hibernating;
+
 
     public Bear(String name, int age, String country, int minTemperature, int maxTemperature, int weight, String color) {
         super(name, age, country, minTemperature, maxTemperature, weight);
         this.color = color;
+
     }
 
     public Bear(String id, String name, int age, String country, int minTemperature, int maxTemperature, int weight, String color) {
         super(id, name, age, country, minTemperature, maxTemperature, weight);
         this.color = color;
+    }
+
+    private Bear() {
+
+        color = "brown";
     }
 
     public void startHibernate() {
@@ -31,11 +47,13 @@ public class Bear extends Animal implements Herbivorous, Carnivore, Insertable {
         hibernating = false;
     }
 
-    public boolean getHibernate() {
+    public boolean getHibernating() {
         return hibernating;
 
     }
-
+    public String getColor() {
+        return color;
+    }
     @Override
     public void drinkWater() {
         logger.info("Bear " + name + " drinks water ");
@@ -58,17 +76,17 @@ public class Bear extends Animal implements Herbivorous, Carnivore, Insertable {
                 getClass().getSimpleName(), getId(), name, age, country, minTemperature, maxTemperature, weight, color);
     }
 
-
     @Override
     public String toString() {
         return "Bear{" +
-                "name='" + name + '\'' +
+                "color='" + color + '\'' +
+                ", hibernating=" + hibernating +
+                ", name='" + name + '\'' +
                 ", age=" + age +
                 ", country='" + country + '\'' +
                 ", minTemperature=" + minTemperature +
                 ", maxTemperature=" + maxTemperature +
                 ", weight=" + weight +
-                ", color='" + color + '\'' +
                 '}';
     }
 }
