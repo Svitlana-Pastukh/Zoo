@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.park.Insertable;
+
 
 @JsonTypeName("Giraffe")
-public class Giraffe extends Animal implements Herbivorous, Insertable {
+public class Giraffe extends Animal implements Herbivorous {
 
     private static final Logger logger = LogManager.getLogger(Giraffe.class);
     @JsonProperty("@type")
@@ -20,6 +20,7 @@ public class Giraffe extends Animal implements Herbivorous, Insertable {
     public Giraffe(String id, String name, int age, String country, int minTemperature, int maxTemperature, int weight) {
         super(id, name, age, country, minTemperature, maxTemperature, weight);
     }
+
     private Giraffe(){
 
     }
@@ -28,23 +29,6 @@ public class Giraffe extends Animal implements Herbivorous, Insertable {
     public void drinkWater() {
         logger.info("Giraffe " + name + " drinks water");
     }
-
-    @Override
-    public String createInsertQuery() {
-        return String.format("INSERT INTO animals(" +
-                        "animal_type," +
-                        "id," +
-                        "name," +
-                        "age," +
-                        "country," +
-                        "minTemperature," +
-                        "maxTemperature," +
-                        "weight," +
-                        "color)" +
-                        "VALUES ('%s', '%s', '%s', %s, '%s', %s, %s, %s, %s);",
-                getClass().getSimpleName(), getId(), name, age, country, minTemperature, maxTemperature, weight, null);
-    }
-
 
     @Override
     public String toString() {
