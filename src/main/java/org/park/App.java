@@ -18,9 +18,19 @@ public class App {
 
     private static final Logger logger = LogManager.getLogger(App.class);
     private static final ObjectMapper mapper = new ObjectMapper();
+    private static ZooRepository zooRepository;
 
-    public static void main(String[] args) throws JsonProcessingException {
- }
+    static {
+        try {
+            zooRepository = new ZooRepository();
+        } catch (SQLException | JsonProcessingException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static ZooRepository getZooRepository() {
+        return zooRepository;
+    }
 
     public static List<Animal> createAnimals() {
         List<Animal> animals = new ArrayList<>();

@@ -1,9 +1,7 @@
 package org.park.zoo.repositories;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.park.zoo.animals.Animal;
-import org.park.zoo.animals.Giraffe;
-import org.park.zoo.animals.Zebra;
+import org.park.zoo.animals.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,8 +15,9 @@ public class ZooRepository implements AnimalCrud {
     private static final String url = "jdbc:h2:mem:";
     private final Connection connection;
 
-    public ZooRepository() throws SQLException {
+    public ZooRepository() throws SQLException, JsonProcessingException {
         connection = DriverManager.getConnection(url);
+        initialize();
     }
 
     @Override
@@ -72,19 +71,23 @@ public class ZooRepository implements AnimalCrud {
         statement.execute("DELETE FROM animals WHERE id='" + id + "';");
     }
 
-    public static void main(String[] args) throws SQLException, JsonProcessingException {
+    private void initialize() throws SQLException, JsonProcessingException {
 
         List<Animal> animals = new ArrayList<>();
         Giraffe giraffe = new Giraffe("Tim", 1, "Africa", 15, 50, 800);
+        Bear bear = new Bear("Fred", 5, "USA", -10, 25, 400, "Black");
+        Wolf wolf = new Wolf("Moon", 2, "North America", -10, 25, 50, "Gray");
+        Lion lion = new Lion("Sara", 7, "Africa", 15, 50, 400);
         Zebra zebra = new Zebra("Po ", 4, "Africa", 15, 45, 200);
+
+        animals.add(bear);
+        animals.add(wolf);
+        animals.add(lion);
         animals.add(zebra);
         animals.add(giraffe);
-        ZooRepository zooRepository = new ZooRepository();
-        zooRepository.createAnimalsTable();
-        zooRepository.insertAnimal(giraffe);
-        zooRepository.insertAnimals(animals);
-        System.out.println(zooRepository.selectAllAnimals());
 
+        createAnimalsTable();
+        insertAnimals(animals);
     }
 }
 
