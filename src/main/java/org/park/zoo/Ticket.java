@@ -10,7 +10,5 @@ public class Ticket {
         this.ticketPrice = ticketPrice;
         this.ticketType = ticketType;
     }
-
-
 }
 
