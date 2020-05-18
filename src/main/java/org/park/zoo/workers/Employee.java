@@ -12,12 +12,11 @@ public class Employee {
     private int workedHours;
 
 
-    public Employee(String name, String surname, int age, int salary, int workedHours) {
+    public Employee(String name, String surname, int age,int salary) {
         this.name = name;
         this.surname = surname;
         this.age = age;
-        this.salary = salary;
-        this.workedHours = workedHours;
+        this.salary=salary;
     }
 
     public int submitWorkHours(int hours) {
