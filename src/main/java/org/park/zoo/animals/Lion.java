@@ -28,18 +28,6 @@ public class Lion extends Animal implements Carnivore {
     @Override
     public void drinkWater() {
 
-        logger.info("Lion " + name + " drinks water");
-    }
-
-    @Override
-    public String toString() {
-        return "Lion{" +
-                " name='" + name + '\'' +
-                ", age=" + age +
-                ", country='" + country + '\'' +
-                ", minTemperature=" + minTemperature +
-                ", maxTemperature=" + maxTemperature +
-                ", weight=" + weight +
-                '}';
+        logger.info("Lion " + getName() + " drinks water");
     }
 }

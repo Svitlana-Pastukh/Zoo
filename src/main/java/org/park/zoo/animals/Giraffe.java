@@ -27,18 +27,7 @@ public class Giraffe extends Animal implements Herbivorous {
 
     @Override
     public void drinkWater() {
-        logger.info("Giraffe " + name + " drinks water");
+        logger.info("Giraffe " + getName() + " drinks water");
     }
 
-    @Override
-    public String toString() {
-        return "Giraffe{" +
-                " name='" + name + '\'' +
-                ", age=" + age +
-                ", country='" + country + '\'' +
-                ", minTemperature=" + minTemperature +
-                ", maxTemperature=" + maxTemperature +
-                ", weight=" + weight +
-                '}';
-    }
 }

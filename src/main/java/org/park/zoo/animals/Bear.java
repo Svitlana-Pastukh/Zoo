@@ -33,12 +33,12 @@ public class Bear extends Animal implements Herbivorous, Carnivore {
     }
 
     public void startHibernate() {
-        logger.info("Bear " + name + " started hibernating");
+        logger.info("Bear " + getName() + " started hibernating");
         hibernating = true;
     }
 
     public void stopHibernate() {
-        logger.info("Bear " + name + " stopped hibernating ");
+        logger.info("Bear " + getName() + " stopped hibernating ");
         hibernating = false;
     }
 
@@ -52,20 +52,7 @@ public class Bear extends Animal implements Herbivorous, Carnivore {
 
     @Override
     public void drinkWater() {
-        logger.info("Bear " + name + " drinks water ");
+        logger.info("Bear " + getName() + " drinks water ");
     }
 
-    @Override
-    public String toString() {
-        return "Bear{" +
-                "color='" + color + '\'' +
-                ", hibernating=" + hibernating +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", country='" + country + '\'' +
-                ", minTemperature=" + minTemperature +
-                ", maxTemperature=" + maxTemperature +
-                ", weight=" + weight +
-                '}';
-    }
 }

@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 
 @JsonTypeName("Wolf")
-public class Wolf extends Animal implements Carnivore{
+public class Wolf extends Animal implements Carnivore {
 
     private static final Logger logger = LogManager.getLogger(Wolf.class);
 
@@ -31,21 +31,9 @@ public class Wolf extends Animal implements Carnivore{
 
     @Override
     public void drinkWater() {
-        logger.info("Wolf " + name + " drink water");
-    }
-
-    @Override
-    public String toString() {
-        return "Wolf{" +
-                "color='" + color + '\'' +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", country='" + country + '\'' +
-                ", minTemperature=" + minTemperature +
-                ", maxTemperature=" + maxTemperature +
-                ", weight=" + weight +
-                '}';
+        logger.info("Wolf " + getName() + " drink water");
     }
 }
+
 
 

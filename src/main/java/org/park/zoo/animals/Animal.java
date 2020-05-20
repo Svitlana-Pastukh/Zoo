@@ -26,14 +26,14 @@ public class Animal implements Serializable {
 
     @JsonProperty("@type")
     private final String type = "Animal";
-
     private final String id;
-    String name;
-    int age;
-    String country;
-    public int minTemperature;
-    public int maxTemperature;
-    int weight;
+    private String name;
+    private int age;
+    private String country;
+    private int minTemperature;
+    private int maxTemperature;
+    private int weight;
+    private long lastVetVisit = 0;
 
     public Animal(String id, String name, int age, String country, int minTemperature, int maxTemperature, int weight) {
         this.id = id;
@@ -50,7 +50,7 @@ public class Animal implements Serializable {
     }
 
     protected Animal() {
-        id=UUID.randomUUID().toString();
+        id = UUID.randomUUID().toString();
     }
 
     public String getId() {
@@ -64,46 +64,60 @@ public class Animal implements Serializable {
     @Override
     public String toString() {
         return "Animal{" +
-                " id='" + id + '\'' +
+                "type='" + type + '\'' +
+                ", id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", country='" + country + '\'' +
                 ", minTemperature=" + minTemperature +
                 ", maxTemperature=" + maxTemperature +
                 ", weight=" + weight +
+                ", lastVetVisit=" + lastVetVisit +
                 '}';
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getAge() {
         return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public String getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public int getMinTemperature() {
+        return minTemperature;
+    }
+
+    public int getMaxTemperature() {
+        return maxTemperature;
     }
 
     public int getWeight() {
         return weight;
     }
 
+    public long getLastVetVisit() {
+        return lastVetVisit;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+    public void setLastVetVisit(long lastVetVisit) {
+        this.lastVetVisit = lastVetVisit;
     }
 }
 

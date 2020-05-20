@@ -29,7 +29,7 @@ public class Accountant extends Employee {
         director.submitWorkHours(210);
         Accountant accountant = new Accountant("Anna", "Gray", 22, 2500);
         accountant.submitWorkHours(250);
-        System.out.println(accountant.calculateBonus(director));
+        logger.info(accountant.calculateBonus(director));
 
     }
 }

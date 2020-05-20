@@ -23,8 +23,8 @@ public class Enclosure {
 
     public void addAnimal(Animal animal) throws AnimalCouldNotBeAdded {
 
-        int min = animal.minTemperature;
-        int max = animal.maxTemperature;
+        int min = animal.getMinTemperature();
+        int max = animal.getMaxTemperature();
 
         if (animalCanBeAdded(animal)) {
             if (acceptableEnclosureTemperature(min, max)) {

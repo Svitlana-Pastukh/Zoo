@@ -25,18 +25,7 @@ public class Zebra extends Animal implements Herbivorous {
 
     @Override
     public void drinkWater() {
-        logger.info("Zebra " + name + "drinks water");
+        logger.info("Zebra " + getName() + "drinks water");
     }
 
-    @Override
-    public String toString() {
-        return "Zebra{" +
-                " name='" + name + '\'' +
-                ", age=" + age +
-                ", country='" + country + '\'' +
-                ", minTemperature=" + minTemperature +
-                ", maxTemperature=" + maxTemperature +
-                ", weight=" + weight +
-                '}';
-    }
 }
