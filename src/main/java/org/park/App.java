@@ -32,6 +32,12 @@ public class App {
         return zooRepository;
     }
 
+    public static void main(String[] args) throws SQLException, JsonProcessingException {
+
+        System.out.println(        zooRepository.selectAllAnimals());
+        System.out.println(createJson(createAnimals()));
+    }
+
     public static List<Animal> createAnimals() {
         List<Animal> animals = new ArrayList<>();
         Giraffe giraffe = new Giraffe("Tim", 1, "Africa", 15, 50, 800);
@@ -72,6 +78,8 @@ public class App {
         return mapper.writeValueAsString(animals);
     }
     public static Animal createObjectFromJson(String animal) throws JsonProcessingException {
+        System.out.println(animal +"<<<<<<<");
+        System.out.println(mapper.readValue(animal, Animal.class).getClass());
         return mapper.readValue(animal, Animal.class);
     }
 }

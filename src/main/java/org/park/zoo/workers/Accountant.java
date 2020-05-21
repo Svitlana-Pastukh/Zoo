@@ -25,11 +25,15 @@ public class Accountant extends Employee {
     }
 
     public static void main(String[] args) {
+
         Director director = new Director("JJ", "Nest", 45, 5000);
         director.submitWorkHours(210);
+        Vet vet = new Vet("Samm", "White", 27, 4500);
+        vet.submitWorkHours(235);
         Accountant accountant = new Accountant("Anna", "Gray", 22, 2500);
         accountant.submitWorkHours(250);
-        logger.info(accountant.calculateBonus(director));
+
+        logger.info(accountant.calculateBonus(vet));
 
     }
 }

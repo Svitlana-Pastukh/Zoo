@@ -3,8 +3,10 @@ package org.park.zoo.animals;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.park.App;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -24,8 +26,6 @@ public class Animal implements Serializable {
 
     private static final Logger logger = LogManager.getLogger(Animal.class);
 
-    @JsonProperty("@type")
-    private final String type = "Animal";
     private final String id;
     private String name;
     private int age;
@@ -63,22 +63,13 @@ public class Animal implements Serializable {
 
     @Override
     public String toString() {
-        return "Animal{" +
-                "type='" + type + '\'' +
-                ", id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", country='" + country + '\'' +
-                ", minTemperature=" + minTemperature +
-                ", maxTemperature=" + maxTemperature +
-                ", weight=" + weight +
-                ", lastVetVisit=" + lastVetVisit +
-                '}';
+        try {
+            return App.createJson(this);
+        } catch (JsonProcessingException e) {
+            logger.error(e);
+        } return null;
     }
 
-    public String getType() {
-        return type;
-    }
 
     public String getName() {
         return name;

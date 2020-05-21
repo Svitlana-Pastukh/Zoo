@@ -1,18 +1,12 @@
 package org.park.zoo.animals;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@JsonTypeName("Bear")
 public class Bear extends Animal implements Herbivorous, Carnivore {
 
     private static final Logger logger = LogManager.getLogger(Bear.class);
-
-    @JsonProperty("@type")
-    private final String type = "Bear";
 
     private final String color;
     private boolean hibernating;
