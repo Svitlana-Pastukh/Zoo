@@ -6,11 +6,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.park.zoo.animals.*;
 import org.park.zoo.repositories.ZooRepository;
+import org.park.zoo.workers.Employee;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class App {
 
     public static void main(String[] args) throws SQLException, JsonProcessingException {
 
-        System.out.println(        zooRepository.selectAllAnimals());
+        System.out.println(zooRepository.selectAllAnimals());
         System.out.println(createJson(createAnimals()));
     }
 
@@ -74,12 +72,15 @@ public class App {
         }
     }
 
-    public static String createJson(Object animals) throws JsonProcessingException {
-        return mapper.writeValueAsString(animals);
+    public static String createJson(Object object) throws JsonProcessingException {
+        return mapper.writeValueAsString(object);
     }
-    public static Animal createObjectFromJson(String animal) throws JsonProcessingException {
-        System.out.println(animal +"<<<<<<<");
-        System.out.println(mapper.readValue(animal, Animal.class).getClass());
+
+    public static Animal createAnimalFromJson(String animal) throws JsonProcessingException {
         return mapper.readValue(animal, Animal.class);
+    }
+
+    public static Employee createEmployeeFromJson(String employee) throws JsonProcessingException {
+        return mapper.readValue(employee, Employee.class);
     }
 }

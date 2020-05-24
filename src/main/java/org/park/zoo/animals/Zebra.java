@@ -15,8 +15,8 @@ public class Zebra extends Animal implements Herbivorous {
         super(id, name, age, country, minTemperature, maxTemperature, weight);
     }
 
-    private Zebra() {
-    }
+//    private Zebra() {
+//    }
 
     @Override
     public void drinkWater() {

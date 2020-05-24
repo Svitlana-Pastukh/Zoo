@@ -1,26 +1,50 @@
 package org.park.zoo.workers;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.UUID;
+
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
+
+@JsonTypeInfo(use = NAME, include = PROPERTY, property = "@type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Accountant.class, name = "Accountant"),
+        @JsonSubTypes.Type(value = Director.class, name = "Director"),
+        @JsonSubTypes.Type(value = AnimalExpert.class, name = "AnimalExpert")})
+
+
 public class Employee {
     private static final Logger logger = LogManager.getLogger(Employee.class);
-    private String name;
-    private String surname;
+    private final String employeeId;
+    private final String name;
+    private final String surname;
     private int age;
     private int salary;
     private int workedHours;
 
 
-    public Employee(String name, String surname, int age,int salary) {
+    public Employee(String employeeId, String name, String surname, int age, int salary) {
+        this.employeeId = employeeId;
         this.name = name;
         this.surname = surname;
         this.age = age;
-        this.salary=salary;
+        this.salary = salary;
+    }
+
+    public Employee(String name, String surname, int age, int salary) {
+        this(UUID.randomUUID().toString(), name, surname, age, salary);
     }
 
     public int submitWorkHours(int hours) {
         return workedHours += hours;
+    }
+
+    public String getEmployeeId() {
+        return employeeId;
     }
 
     public String getName() {
@@ -41,6 +65,10 @@ public class Employee {
 
     public int getWorkedHours() {
         return workedHours;
+    }
+
+    public void setWorkedHours(int workedHours) {
+        this.workedHours = workedHours;
     }
 }
 

@@ -21,10 +21,10 @@ public class Bear extends Animal implements Herbivorous, Carnivore {
         this.color = color;
     }
 
-    private Bear() {
-
-        color = "brown";
-    }
+//    private Bear() {
+//
+//        color = "brown";
+//    }
 
     public void startHibernate() {
         logger.info("Bear " + getName() + " started hibernating");

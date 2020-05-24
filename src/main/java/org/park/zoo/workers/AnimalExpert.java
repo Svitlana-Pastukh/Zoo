@@ -15,17 +15,21 @@ public class AnimalExpert extends Employee {
         super(name, surname, age, salary);
     }
 
+    public AnimalExpert(String employeeId, String name, String surname, int age, int salary) {
+        super(employeeId, name, surname, age, salary);
+    }
+
     public static void feedAnimal(Animal animal) throws AnimalDoesNotExist {
         if (animal instanceof Carnivore && animal instanceof Herbivorous) {
-            logger.info("Gave {} kilos of food to: {}", calculateFoodAmount(animal.getWeight()), animal.getClass().getSimpleName());
+            logger.info("Gave {} kilos of meat and plants to: {}", calculateFoodAmount(animal.getWeight()), animal.getClass().getSimpleName());
         } else if (animal instanceof Carnivore) {
-            logger.info("Gave {} kilos of food to: {}", calculateFoodAmount(animal.getWeight()), animal.getClass().getSimpleName());
+            logger.info("Gave {} kilos meat to: {}", calculateFoodAmount(animal.getWeight()), animal.getClass().getSimpleName());
         } else if (animal instanceof Herbivorous) {
-            logger.info("Gave {} kilos of food to: {}", calculateFoodAmount(animal.getWeight()), animal.getClass().getSimpleName());
+            logger.info("Gave {} kilos of plants to: {}", calculateFoodAmount(animal.getWeight()), animal.getClass().getSimpleName());
         } else throw new AnimalDoesNotExist("There is no such animal in the zoo!!!");
     }
 
-    public static int calculateFoodAmount(int animalWeight) {
+    private static int calculateFoodAmount(int animalWeight) {
         return animalWeight / 20;
     }
 

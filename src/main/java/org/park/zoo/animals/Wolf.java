@@ -20,9 +20,9 @@ public class Wolf extends Animal implements Carnivore {
         this.color = color;
     }
 
-    private Wolf() {
-        color = "Black";
-    }
+//    private Wolf() {
+//        color = "Black";
+//    }
 
     @Override
     public void drinkWater() {
