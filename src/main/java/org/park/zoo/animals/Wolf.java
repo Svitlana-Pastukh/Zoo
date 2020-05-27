@@ -20,10 +20,6 @@ public class Wolf extends Animal implements Carnivore {
         this.color = color;
     }
 
-//    private Wolf() {
-//        color = "Black";
-//    }
-
     @Override
     public void drinkWater() {
         logger.info("Wolf " + getName() + " drink water");

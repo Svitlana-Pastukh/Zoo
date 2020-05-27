@@ -6,7 +6,7 @@ import org.park.zoo.workers.Employee;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface EmployeeCrud {
+public interface EmployeeRepository {
 
     void createEmployeesTable() throws SQLException;
 
