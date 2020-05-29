@@ -19,4 +19,6 @@ public interface EmployeeRepository {
     void insertEmployee(Employee employee) throws SQLException, JsonProcessingException;
 
     void deleteEmployee(String id) throws SQLException, JsonProcessingException;
+
+    Employee selectEmployeeByPosition(String position) throws SQLException, JsonProcessingException;
 }

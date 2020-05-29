@@ -1,7 +1,9 @@
 //package org.park.zoo.controller;
 //
-//import org.park.App;
 //import org.park.zoo.animals.Animal;
+//import org.park.zoo.repositories.AnimalRepositoryImpl;
+//import org.park.zoo.services.AnimalService;
+//import org.park.zoo.services.AnimalServiceImpl;
 //
 //import javax.servlet.ServletException;
 //import javax.servlet.annotation.WebServlet;
@@ -18,10 +20,11 @@
 //@WebServlet("/animals")
 //public class MainServlet extends HttpServlet {
 //
-//    private final ZooRepository repository;
+//    private final AnimalService = new AnimalServiceImpl();
+//
 //
 //    public MainServlet() {
-//        repository = App.getZooRepository();
+//        repository = AnimalRepositoryImpl;
 //    }
 //
 //    @Override

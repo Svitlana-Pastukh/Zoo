@@ -1,6 +1,8 @@
 package org.park.zoo.repositories;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.park.zoo.workers.*;
 
 import java.sql.Connection;
@@ -14,6 +16,7 @@ import static org.park.App.createEmployeeFromJson;
 import static org.park.App.createJson;
 
 public class EmployeeRepositoryImpl implements EmployeeRepository {
+    private static final Logger logger = LogManager.getLogger(EmployeeRepositoryImpl.class);
 
     private final Connection connection;
 
@@ -29,7 +32,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     public void createEmployeesTable() throws SQLException {
 
         Statement statement = connection.createStatement();
-        statement.execute("CREATE TABLE employees(id VARCHAR(40) NOT NULL, employee TEXT, PRIMARY KEY (id));");
+        statement.execute("CREATE TABLE employees(id VARCHAR(40) NOT NULL, employee TEXT, employee_type TEXT, PRIMARY KEY (id));");
     }
 
     @Override
@@ -38,7 +41,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
         for (Employee employee : list) {
 
             String json = createJson(employee);
-            String b = String.format("MERGE INTO employees KEY (id) VALUES ('%s', '%s')", employee.getEmployeeId(), json);
+            String b = String.format("MERGE INTO employees KEY (id) VALUES ('%s', '%s', '%s')", employee.getEmployeeId(), json, employee.getClass().getSimpleName());
             statement.execute(b);
         }
     }
@@ -68,13 +71,24 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     @Override
     public void insertEmployee(Employee employee) throws SQLException, JsonProcessingException {
         Statement statement = connection.createStatement();
-        statement.execute(String.format("MERGE INTO employees KEY (id) VALUES ('%s', '%s')", employee.getEmployeeId(), createJson(employee)));
+        statement.execute(String.format("MERGE INTO employees KEY (id) VALUES ('%s', '%s', '%s')", employee.getEmployeeId(), createJson(employee), employee.getClass().getSimpleName()));
     }
 
     @Override
     public void deleteEmployee(String id) throws SQLException, JsonProcessingException {
         Statement statement = connection.createStatement();
         statement.execute("DELETE FROM employees WHERE id='" + id + "';");
+    }
+
+    @Override
+    public Employee selectEmployeeByPosition(String employeeType) throws SQLException, JsonProcessingException {
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT employee FROM employees WHERE employee_type='" + employeeType + "';");
+        if (resultSet.next()) {
+            return createEmployeeFromJson(resultSet.getString(2));
+        } else {
+            return null;
+        }
     }
 
     private void initialize() throws SQLException, JsonProcessingException {

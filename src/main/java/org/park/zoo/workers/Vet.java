@@ -11,7 +11,7 @@ public class Vet extends Employee {
         super(name, surname, age, salary);
     }
 
-    public static void checkAnimal(Animal animal) {
+    public  void checkAnimal(Animal animal) {
 
         long currentTimeMinusThirty = minusThirtyDays(System.currentTimeMillis());
         long timeVisit = animal.getLastVetVisit();
