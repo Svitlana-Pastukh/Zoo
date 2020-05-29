@@ -21,4 +21,5 @@ public interface AnimalRepository {
 
     void deleteAnimal(String id) throws SQLException, JsonProcessingException;
 
+    void initialize() throws SQLException, JsonProcessingException;
 }

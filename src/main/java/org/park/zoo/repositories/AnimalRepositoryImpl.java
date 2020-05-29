@@ -2,6 +2,7 @@ package org.park.zoo.repositories;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.park.zoo.animals.*;
+import org.park.zoo.repositories.utils.ConnectionSingleton;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -69,7 +70,8 @@ public class AnimalRepositoryImpl implements AnimalRepository {
         statement.execute("DELETE FROM animals WHERE id='" + id + "';");
     }
 
-    private void initialize() throws SQLException, JsonProcessingException {
+
+    public void initialize() throws SQLException, JsonProcessingException {
 
         List<Animal> animals = new ArrayList<>();
         Giraffe giraffe = new Giraffe("Tim", 1, "Africa", 15, 50, 800);

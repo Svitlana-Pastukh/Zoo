@@ -19,7 +19,7 @@ public class AnimalExpert extends Employee {
         super(employeeId, name, surname, age, salary);
     }
 
-    public static void feedAnimal(Animal animal) throws AnimalDoesNotExist {
+    public void feedAnimal(Animal animal) throws AnimalDoesNotExist {
         if (animal instanceof Carnivore && animal instanceof Herbivorous) {
             logger.info("Gave {} kilos of meat and plants to: {}", calculateFoodAmount(animal.getWeight()), animal.getClass().getSimpleName());
         } else if (animal instanceof Carnivore) {
@@ -33,11 +33,6 @@ public class AnimalExpert extends Employee {
         return animalWeight / 20;
     }
 
-    public static void main(String[] args) throws AnimalDoesNotExist {
-        Zebra zebra = new Zebra("Po ", 4, "Africa", 15, 45, 200);
-        System.out.println(zebra);
-        feedAnimal(zebra);
-
-    }
 }
+
 

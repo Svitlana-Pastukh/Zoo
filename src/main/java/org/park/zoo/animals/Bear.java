@@ -8,7 +8,7 @@ public class Bear extends Animal implements Herbivorous, Carnivore {
 
     private static final Logger logger = LogManager.getLogger(Bear.class);
 
-    private final String color;
+    private String color;
     private boolean hibernating;
 
     public Bear(String name, int age, String country, int minTemperature, int maxTemperature, int weight, String color) {
@@ -21,10 +21,9 @@ public class Bear extends Animal implements Herbivorous, Carnivore {
         this.color = color;
     }
 
-//    private Bear() {
-//
-//        color = "brown";
-//    }
+    public Bear() {
+    }
+
 
     public void startHibernate() {
         logger.info("Bear " + getName() + " started hibernating");

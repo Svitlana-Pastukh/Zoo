@@ -6,4 +6,14 @@
     <listener>
         <listener-class>org.h2.server.web.DbStarter</listener-class>
     </listener>
+    <display-name>Zoo</display-name>
+    <servlet>
+        <servlet-name>zoo</servlet-name>
+        <servlet-class>org.park.zoo.controller.MainServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>zoo</servlet-name>
+        <url-pattern>/zoo</url-pattern>
+    </servlet-mapping>
+
 </web-app>

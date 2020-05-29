@@ -15,6 +15,9 @@ public class Lion extends Animal implements Carnivore {
         super(id, name, age, country, minTemperature, maxTemperature, weight);
     }
 
+    public Lion() {
+    }
+
     @Override
     public void drinkWater() {
 

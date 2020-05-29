@@ -5,11 +5,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.park.zoo.animals.Animal;
 import org.park.zoo.animals.Bear;
+import org.park.zoo.animals.exceptions.AnimalDoesNotExist;
+import org.park.zoo.animals.exceptions.AnimalNotFound;
 import org.park.zoo.animals.exceptions.EmployeeNotFound;
 import org.park.zoo.repositories.AnimalRepository;
 import org.park.zoo.repositories.AnimalRepositoryImpl;
 import org.park.zoo.repositories.EmployeeRepository;
 import org.park.zoo.repositories.EmployeeRepositoryImpl;
+import org.park.zoo.workers.AnimalExpert;
 import org.park.zoo.workers.Employee;
 import org.park.zoo.workers.Vet;
 
@@ -20,9 +23,21 @@ public class AnimalServiceImpl implements AnimalService {
 
     private static final Logger logger = LogManager.getLogger(AnimalServiceImpl.class);
 
-    AnimalRepository animalRepository = new AnimalRepositoryImpl();
+    private final AnimalRepository animalRepository;
 
-    EmployeeRepository employeeRepository = new EmployeeRepositoryImpl();
+    private final EmployeeRepository employeeRepository;
+
+    public AnimalServiceImpl(AnimalRepository animalRepository, EmployeeRepository employeeRepository) {
+
+        this.animalRepository = animalRepository;
+        this.employeeRepository = employeeRepository;
+    }
+
+    public AnimalServiceImpl() throws SQLException, JsonProcessingException {
+
+        this.animalRepository = new AnimalRepositoryImpl();
+        this.employeeRepository = new EmployeeRepositoryImpl();
+    }
 
 
     @Override
@@ -32,12 +47,19 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public List<Animal> selectAllAnimals() throws SQLException, JsonProcessingException {
-        return null;
+        return animalRepository.selectAllAnimals();
     }
 
     @Override
-    public Animal selectAnimalById(String id) throws SQLException, JsonProcessingException {
-        return null;
+    public Animal selectAnimalById(String id) throws SQLException, JsonProcessingException, AnimalNotFound {
+
+        Animal animal = animalRepository.selectAnimalById(id);
+
+        if (animal != null) {
+            return animal;
+        } else {
+            throw new AnimalNotFound("Cannot find animal");
+        }
     }
 
     @Override
@@ -51,60 +73,86 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void startHibernate() throws SQLException, JsonProcessingException {
-        List<Animal> animals = animalRepository.selectAllAnimals();
-        for (Animal a : animals) {
-            if (a instanceof Bear) {
-                System.out.println("Bear " + a.getName() + " started hibernating");
-            } else {
-                throw new IllegalArgumentException("Provided animal is not bear");
-            }
+    public void startHibernating(String id) throws SQLException, JsonProcessingException {
+        Animal animal = animalRepository.selectAnimalById(id);
+
+        if (animal instanceof Bear) {
+            ((Bear) animal).startHibernate();
+            logger.info("Bear " + animal.getName() + " started hibernating");
+        } else {
+            throw new IllegalArgumentException("Provided animal is not bear");
         }
     }
 
     @Override
-    public void stopHibernate() throws SQLException, JsonProcessingException {
-        List<Animal> animals = animalRepository.selectAllAnimals();
-        for (Animal a : animals) {
-            if (a instanceof Bear) {
-                ((Bear) a).stopHibernate();
-                logger.info("Bear " + a.getName() + " stop hibernating");
-            } else {
-                throw new IllegalArgumentException("Provided animal is not bear");
-            }
-        }
+    public void stopHibernating(String id) throws SQLException, JsonProcessingException {
+        Animal animal = animalRepository.selectAnimalById(id);
 
+        if (animal instanceof Bear) {
+            ((Bear) animal).stopHibernate();
+            logger.info("Bear " + animal.getName() + " stop hibernating");
+        } else {
+            throw new IllegalArgumentException("Provided animal is not bear");
+        }
     }
 
     @Override
-    public void drinkWater() {
-
+    public void giveWaterToAnimalById(String id) throws SQLException, JsonProcessingException {
+        Animal animal = animalRepository.selectAnimalById(id);
+        animal.drinkWater();
     }
 
     @Override
     public void sendToVet(Animal animal) throws SQLException, JsonProcessingException, EmployeeNotFound {
         List<Employee> employees = employeeRepository.selectAllEmployees();
+        Vet vet = findVet(employees);
+        if (vet != null) {
+            vet.checkAnimal(animal);
+        } else {
+            throw new EmployeeNotFound("Cannot find Vet employee");
+        }
+    }
+
+    @Override
+    public void addAnimalToEnclosure(Animal animal) {
+    }
+
+    @Override
+    public void feedAnimal(Animal animal) throws AnimalDoesNotExist, SQLException, JsonProcessingException, EmployeeNotFound {
+        List<Employee> employees = employeeRepository.selectAllEmployees();
+        AnimalExpert animalExpert = findAnimalExpert(employees);
+        if (animalExpert != null) {
+            animalExpert.feedAnimal(animal);
+        } else {
+            throw new EmployeeNotFound("Cannot find an AnimalExpert employee");
+        }
+    }
+
+    @Override
+    public void initialize() throws SQLException, JsonProcessingException {
+        animalRepository.initialize();
+
+    }
+
+    private AnimalExpert findAnimalExpert(List<Employee> employees) {
         for (Employee a : employees) {
-            if (a instanceof Vet) {
-                ((Vet) a).checkAnimal(animal);
-                logger.info(a.getName() + " checked animal: " + animal.getName());
-            } else {
-                throw new EmployeeNotFound("Cannot find a Vet employee");
+            if (a instanceof AnimalExpert) {
+                return (AnimalExpert) a;
             }
         }
-
-
+        return null;
     }
 
-    @Override
-    public void addAnimal(Animal animal) {
-
-    }
-
-    @Override
-    public void feedAnimal(Animal animal) {
-
-
+    private Vet findVet(List<Employee> employees) {
+        for (Employee a : employees) {
+            if (a instanceof Vet) {
+                return (Vet) a;
+            }
+        }
+        return null;
     }
 }
+
+
+
 

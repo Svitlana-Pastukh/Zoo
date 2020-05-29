@@ -1,4 +1,4 @@
-package org.park.zoo.repositories;
+package org.park.zoo.repositories.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

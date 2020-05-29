@@ -8,7 +8,7 @@ public class Wolf extends Animal implements Carnivore {
 
     private static final Logger logger = LogManager.getLogger(Wolf.class);
 
-    private final String color;
+    private String color;
 
     public Wolf(String name, int age, String country, int minTemperature, int maxTemperature, int weight, String color) {
         super(name, age, country, minTemperature, maxTemperature, weight);
@@ -18,6 +18,9 @@ public class Wolf extends Animal implements Carnivore {
     public Wolf(String id, String name, int age, String country, int minTemperature, int maxTemperature, int weight, String color) {
         super(id, name, age, country, minTemperature, maxTemperature, weight);
         this.color = color;
+    }
+
+    public Wolf() {
     }
 
     @Override

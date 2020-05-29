@@ -15,6 +15,9 @@ public class Giraffe extends Animal implements Herbivorous {
         super(id, name, age, country, minTemperature, maxTemperature, weight);
     }
 
+    public Giraffe() {
+    }
+
     @Override
     public void drinkWater() {
         logger.info("Giraffe " + getName() + " drinks water");

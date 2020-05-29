@@ -3,6 +3,7 @@ package org.park.zoo.repositories;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.park.zoo.repositories.utils.ConnectionSingleton;
 import org.park.zoo.workers.*;
 
 import java.sql.Connection;
