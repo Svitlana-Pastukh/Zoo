@@ -14,14 +14,15 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Accountant.class, name = "Accountant"),
         @JsonSubTypes.Type(value = Director.class, name = "Director"),
-        @JsonSubTypes.Type(value = AnimalExpert.class, name = "AnimalExpert")})
+        @JsonSubTypes.Type(value = AnimalExpert.class, name = "AnimalExpert"),
+        @JsonSubTypes.Type(value = Vet.class, name = "Vet")})
 
 
 public class Employee {
     private static final Logger logger = LogManager.getLogger(Employee.class);
-    private final String employeeId;
-    private final String name;
-    private final String surname;
+    private String employeeId;
+    private String name;
+    private String surname;
     private int age;
     private int salary;
     private int workedHours;
@@ -37,6 +38,9 @@ public class Employee {
 
     public Employee(String name, String surname, int age, int salary) {
         this(UUID.randomUUID().toString(), name, surname, age, salary);
+    }
+
+    public Employee() {
     }
 
     public int submitWorkHours(int hours) {

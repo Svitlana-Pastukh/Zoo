@@ -11,6 +11,9 @@ public class Vet extends Employee {
         super(name, surname, age, salary);
     }
 
+    public Vet() {
+    }
+
     public  void checkAnimal(Animal animal) {
 
         long currentTimeMinusThirty = minusThirtyDays(System.currentTimeMillis());
@@ -24,10 +27,6 @@ public class Vet extends Employee {
     private static long minusThirtyDays(long currentMillis) {
         long thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000L;
         return currentMillis - thirtyDaysInMillis;
-    }
-    public static void main(String[] args) {
-        Vet vet = new Vet("Samm","White",27,4500);
-        vet.submitWorkHours(235);
     }
 
 }

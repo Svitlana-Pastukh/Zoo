@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface AnimalService {
 
-    Animal createAnimal(String animalJson);
+    Animal createAnimal(String animalJson) throws SQLException, JsonProcessingException;
 
     List<Animal> selectAllAnimals() throws SQLException, JsonProcessingException;
 
@@ -20,7 +20,7 @@ public interface AnimalService {
 
     void updateAnimal(Animal animal) throws SQLException, JsonProcessingException;
 
-    void deleteAnimal(String id) throws SQLException, JsonProcessingException;
+    void deleteAnimal(String id) throws SQLException, JsonProcessingException, AnimalNotFound;
 
     void startHibernating(String id) throws SQLException, JsonProcessingException, AnimalDoesNotExist;
 

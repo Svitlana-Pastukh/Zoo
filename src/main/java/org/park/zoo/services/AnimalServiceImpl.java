@@ -19,6 +19,8 @@ import org.park.zoo.workers.Vet;
 import java.sql.SQLException;
 import java.util.List;
 
+import static org.park.App.createAnimalFromJson;
+
 public class AnimalServiceImpl implements AnimalService {
 
     private static final Logger logger = LogManager.getLogger(AnimalServiceImpl.class);
@@ -41,8 +43,8 @@ public class AnimalServiceImpl implements AnimalService {
 
 
     @Override
-    public Animal createAnimal(String animalJson) {
-        return null;
+    public Animal createAnimal(String animalJson) throws JsonProcessingException {
+         return createAnimalFromJson(animalJson);
     }
 
     @Override
@@ -64,12 +66,16 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public void updateAnimal(Animal animal) throws SQLException, JsonProcessingException {
-
+        animalRepository.insertAnimal(animal);
     }
 
     @Override
-    public void deleteAnimal(String id) throws SQLException, JsonProcessingException {
-
+    public void deleteAnimal(String id) throws SQLException, JsonProcessingException, AnimalNotFound {
+        if (id != null && !id.isBlank()) {
+            animalRepository.deleteAnimal(id);
+        } else {
+            throw new AnimalNotFound("inappropriate id");
+        }
     }
 
     @Override

@@ -26,7 +26,7 @@ public class Animal implements Serializable {
 
     private static final Logger logger = LogManager.getLogger(Animal.class);
 
-    private final String id;
+    private String id;
     private String name;
     private int age;
     private String country;
@@ -50,7 +50,6 @@ public class Animal implements Serializable {
     }
 
     protected Animal() {
-        id = UUID.randomUUID().toString();
     }
 
     public String getId() {
