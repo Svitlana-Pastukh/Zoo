@@ -18,6 +18,9 @@ public class Accountant extends Employee {
         super(employeeId, name, surname, age, salary);
     }
 
+    public Accountant() {
+    }
+
     public int calculateBonus(Employee employee) {
 
         int hourRate = employee.getSalary() / WORK_HOURS_PER_MONTH;
@@ -35,23 +38,6 @@ public class Accountant extends Employee {
         employee.setWorkedHours(0);
         System.out.println(s);
         return s;
-    }
-
-
-    public static void main(String[] args) {
-
-        Director director = new Director("JJ", "Nest", 45, 5000);
-        director.submitWorkHours(210);
-        Vet vet = new Vet("Samm", "White", 27, 4500);
-        vet.submitWorkHours(215);
-        Accountant accountant = new Accountant("Anna", "Gray", 22, 2500);
-        accountant.submitWorkHours(250);
-        accountant.paySalary(vet);
-        AnimalExpert animalExpert = new AnimalExpert("Bob", "Ice", 32, 3750);
-        animalExpert.submitWorkHours(231);
-
-        logger.info(accountant.calculateBonus(vet));
-
     }
 }
 

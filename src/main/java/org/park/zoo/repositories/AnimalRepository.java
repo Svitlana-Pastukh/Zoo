@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.park.zoo.animals.Animal;
 
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 public interface AnimalRepository {

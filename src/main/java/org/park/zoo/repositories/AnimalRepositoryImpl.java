@@ -70,7 +70,6 @@ public class AnimalRepositoryImpl implements AnimalRepository {
         statement.execute("DELETE FROM animals WHERE id='" + id + "';");
     }
 
-
     public void initialize() throws SQLException, JsonProcessingException {
 
         List<Animal> animals = new ArrayList<>();

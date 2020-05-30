@@ -14,9 +14,7 @@ public class Director extends Employee {
         super(employeeId, name, surname, age, salary);
     }
 
-    public static void main(String[] args) {
-       Director director = new Director("JJ","Nest",45,5000);
-       director.submitWorkHours(210);
-   }
+    public Director() {
+    }
 }
 

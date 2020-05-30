@@ -76,7 +76,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
-    public void deleteEmployee(String id) throws SQLException, JsonProcessingException {
+    public void deleteEmployee(String id) throws SQLException {
         Statement statement = connection.createStatement();
         statement.execute("DELETE FROM employees WHERE id='" + id + "';");
     }
@@ -92,7 +92,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
         }
     }
 
-    private void initialize() throws SQLException, JsonProcessingException {
+    public void initialize() throws SQLException, JsonProcessingException {
 
         List<Employee> employees = new ArrayList<>();
         Director director = new Director("JJ", "Nest", 45, 5000);

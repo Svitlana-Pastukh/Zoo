@@ -1,12 +1,10 @@
 package org.park.zoo.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-
-import org.park.zoo.animals.Animal;
-import org.park.zoo.animals.exceptions.AnimalNotFound;
-import org.park.zoo.animals.exceptions.EmployeeNotFound;
-import org.park.zoo.services.AnimalService;
 import org.park.zoo.services.AnimalServiceImpl;
+import org.park.zoo.services.EmployeeService;
+import org.park.zoo.services.EmployeeServiceImpl;
+import org.park.zoo.workers.Employee;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,40 +14,37 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.park.App.createJson;
 
-
-@WebServlet("/vet")
-public class VetServlet extends HttpServlet {
-    private AnimalService service;
+@WebServlet("/employees")
+public class GetAllEmployees extends HttpServlet {
+    private EmployeeService employeeService;
 
     {
         try {
-            service = new AnimalServiceImpl();
+            employeeService = new EmployeeServiceImpl();
         } catch (SQLException | JsonProcessingException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<Employee> employees = null;
         try {
-            String id = req.getParameter("id");
-            Animal animal = service.selectAnimalById(id);
-            service.sendToVet(animal);
-            service.updateAnimal(animal);
+            employees = employeeService.selectAllEmployees();
 
-            String animalJson = createJson(animal);
-
+            String employeesJson = createJson(employees);
             resp.setContentType("application/json");
-
             PrintWriter printWriter = resp.getWriter();
-            printWriter.write(animalJson);
+            printWriter.write(employeesJson);
             printWriter.close();
 
-        } catch (SQLException | AnimalNotFound | EmployeeNotFound throwables) {
+
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
     }
 }
