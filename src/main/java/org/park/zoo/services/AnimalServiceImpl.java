@@ -29,13 +29,15 @@ public class AnimalServiceImpl implements AnimalService {
 
     private final EmployeeRepository employeeRepository;
 
+    private static final AnimalService INSTANCE = new AnimalServiceImpl();
+
     public AnimalServiceImpl(AnimalRepository animalRepository, EmployeeRepository employeeRepository) {
 
         this.animalRepository = animalRepository;
         this.employeeRepository = employeeRepository;
     }
 
-    public AnimalServiceImpl() throws SQLException, JsonProcessingException {
+    public AnimalServiceImpl() {
 
         this.animalRepository = new AnimalRepositoryImpl();
         this.employeeRepository = new EmployeeRepositoryImpl();
@@ -138,6 +140,10 @@ public class AnimalServiceImpl implements AnimalService {
     public void initialize() throws SQLException, JsonProcessingException {
         animalRepository.initialize();
 
+    }
+
+    public static AnimalService getInstance(){
+        return INSTANCE;
     }
 
     private AnimalExpert findAnimalExpert(List<Employee> employees) {

@@ -1,11 +1,9 @@
 package org.park.zoo.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.park.zoo.animals.Animal;
 import org.park.zoo.services.AnimalService;
 import org.park.zoo.services.AnimalServiceImpl;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,24 +16,23 @@ import java.util.List;
 import static org.park.App.createJson;
 
 @WebServlet("/animals")
-public class MainServlet extends HttpServlet {
+public class AnimalsServlet extends HttpServlet {
 
-    private AnimalService service;
+    private final AnimalService service;
 
-    {
-        try {
-            service = new AnimalServiceImpl();
-        } catch (SQLException | JsonProcessingException throwables) {
-            throwables.printStackTrace();
-        }
+    public AnimalsServlet(AnimalService service) {
+        this.service = service;
+    }
+
+    public AnimalsServlet() {
+        this.service = AnimalServiceImpl.getInstance();
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        List<Animal> animals = null;
         try {
-            animals = service.selectAllAnimals();
+            List<Animal> animals  = service.selectAllAnimals();
 
             String animalsJson = createJson(animals);
             resp.setContentType("application/json");

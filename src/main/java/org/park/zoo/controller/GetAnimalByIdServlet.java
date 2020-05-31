@@ -1,6 +1,5 @@
 package org.park.zoo.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.park.zoo.animals.Animal;
 import org.park.zoo.animals.exceptions.AnimalNotFound;
 import org.park.zoo.services.AnimalService;
@@ -19,14 +18,15 @@ import static org.park.App.createJson;
 
 @WebServlet("/animal")
 public class GetAnimalByIdServlet extends HttpServlet {
-    private AnimalService service;
 
-    {
-        try {
-            service = new AnimalServiceImpl();
-        } catch (SQLException | JsonProcessingException throwables) {
-            throwables.printStackTrace();
-        }
+    private final AnimalService service;
+
+    public GetAnimalByIdServlet(AnimalService service) {
+        this.service = service;
+    }
+
+    public GetAnimalByIdServlet() {
+        this.service = AnimalServiceImpl.getInstance();
     }
 
     @Override

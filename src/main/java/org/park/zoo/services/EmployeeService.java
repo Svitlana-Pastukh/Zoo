@@ -27,7 +27,7 @@ public interface EmployeeService {
 
     void feedAnimal(Animal animal) throws SQLException, JsonProcessingException, AnimalDoesNotExist, EmployeeNotFound;
 
-    int calculateBonus(Employee employee);
+    int calculateBonus(Employee employee) throws SQLException, JsonProcessingException, EmployeeNotFound;
 
-    int paySalary(Employee employee);
+    int paySalary(Employee employee) throws EmployeeNotFound, SQLException, JsonProcessingException;
 }

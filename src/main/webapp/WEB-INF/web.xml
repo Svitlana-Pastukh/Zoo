@@ -9,7 +9,7 @@
     <display-name>Zoo</display-name>
     <servlet>
         <servlet-name>zoo</servlet-name>
-        <servlet-class>org.park.zoo.controller.MainServlet</servlet-class>
+        <servlet-class>org.park.zoo.controller.AnimalsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>zoo</servlet-name>

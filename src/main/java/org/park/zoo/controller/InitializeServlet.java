@@ -1,6 +1,5 @@
 package org.park.zoo.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.park.zoo.services.AnimalService;
 import org.park.zoo.services.AnimalServiceImpl;
 import org.park.zoo.services.EmployeeService;
@@ -16,28 +15,13 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 @WebServlet("/initialize")
-public class InitializeAnimalServlet extends HttpServlet {
-    private AnimalService animalService;
-    private EmployeeService employeeService;
+public class InitializeServlet extends HttpServlet {
+    private final AnimalService animalService = AnimalServiceImpl.getInstance();
+    private final EmployeeService employeeService = EmployeeServiceImpl.getInstance();
 
-    {
-        try {
-            animalService = new AnimalServiceImpl();
-        } catch (SQLException | JsonProcessingException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-
-    {
-        try {
-            employeeService = new EmployeeServiceImpl();
-        } catch (SQLException | JsonProcessingException throwables) {
-            throwables.printStackTrace();
-        }
-    }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             animalService.initialize();
             employeeService.initialize();
