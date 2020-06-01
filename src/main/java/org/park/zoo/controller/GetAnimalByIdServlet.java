@@ -5,7 +5,6 @@ import org.park.zoo.animals.exceptions.AnimalNotFound;
 import org.park.zoo.services.AnimalService;
 import org.park.zoo.services.AnimalServiceImpl;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +29,7 @@ public class GetAnimalByIdServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         try {
             String id = req.getParameter("id");
@@ -39,16 +38,36 @@ public class GetAnimalByIdServlet extends HttpServlet {
 
             String animalJson = createJson(animal);
 
-            resp.setContentType("application/json");
-
-            PrintWriter printWriter = resp.getWriter();
-            printWriter.write(animalJson);
-            printWriter.close();
+            ServletUtils.setBody(resp, animalJson);
 
         } catch (SQLException | AnimalNotFound throwables) {
             throwables.printStackTrace();
         }
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
+
+        PrintWriter printWriter;
+        try {
+
+            String id = req.getParameter("id");
+            service.deleteAnimal(id);
+            ServletUtils.setBody(resp, "Animal delete");
+        } catch (AnimalNotFound exception) {
+
+            resp.setStatus(404);
+
+        } catch (SQLException | IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+
+        String body = ServletUtils.getBody(req);
+    }
 }
+
 

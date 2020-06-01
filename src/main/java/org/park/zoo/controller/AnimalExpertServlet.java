@@ -7,13 +7,11 @@ import org.park.zoo.animals.exceptions.EmployeeNotFound;
 import org.park.zoo.services.AnimalService;
 import org.park.zoo.services.AnimalServiceImpl;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import static org.park.App.createJson;
@@ -33,7 +31,7 @@ public class AnimalExpertServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 
         try {
             String id = req.getParameter("id");
@@ -41,18 +39,15 @@ public class AnimalExpertServlet extends HttpServlet {
             service.feedAnimal(animal);
             service.updateAnimal(animal);
 
-            String animalJson = createJson(animal);
+            ServletUtils.setBody(resp, createJson(animal));
 
-            resp.setContentType("application/json");
+        } catch (AnimalNotFound | EmployeeNotFound | AnimalDoesNotExist exception) {
 
-            PrintWriter printWriter = resp.getWriter();
-            printWriter.write(animalJson);
-            printWriter.close();
+            resp.setStatus(404);
 
-        } catch (SQLException | AnimalNotFound | EmployeeNotFound | AnimalDoesNotExist throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException | IOException exception) {
+            exception.printStackTrace();
         }
-
     }
 }
 

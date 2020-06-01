@@ -1,13 +1,9 @@
 package org.park.zoo.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.park.zoo.animals.Animal;
-import org.park.zoo.animals.exceptions.AnimalDoesNotExist;
 import org.park.zoo.animals.exceptions.AnimalNotFound;
 import org.park.zoo.services.AnimalService;
 import org.park.zoo.services.AnimalServiceImpl;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
