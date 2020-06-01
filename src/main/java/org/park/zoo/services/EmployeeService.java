@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface EmployeeService {
+    Employee createEmployee(String employeeJson) throws SQLException, JsonProcessingException;
 
     List<Employee> selectAllEmployees() throws SQLException, JsonProcessingException;
 

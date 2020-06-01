@@ -18,6 +18,8 @@ import org.park.zoo.workers.Vet;
 import java.sql.SQLException;
 import java.util.List;
 
+import static org.park.App.createEmployeeFromJson;
+
 public class EmployeeServiceImpl implements EmployeeService {
     private static final Logger logger = LogManager.getLogger(EmployeeServiceImpl.class);
 
@@ -38,6 +40,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         this.animalRepository = new AnimalRepositoryImpl();
         this.employeeRepository = new EmployeeRepositoryImpl();
+    }
+
+    @Override
+    public Employee createEmployee(String employeeJson) throws JsonProcessingException {
+        return createEmployeeFromJson(employeeJson);
     }
 
     @Override

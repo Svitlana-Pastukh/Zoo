@@ -46,7 +46,7 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public Animal createAnimal(String animalJson) throws JsonProcessingException {
-         return createAnimalFromJson(animalJson);
+        return createAnimalFromJson(animalJson);
     }
 
     @Override
@@ -81,26 +81,18 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void startHibernating(String id) throws SQLException, JsonProcessingException {
+    public void changeHibernationState(String id, String action) throws SQLException, JsonProcessingException, AnimalNotFound {
+
         Animal animal = animalRepository.selectAnimalById(id);
 
-        if (animal instanceof Bear) {
+        if (animal instanceof Bear && action.equalsIgnoreCase("start")) {
             ((Bear) animal).startHibernate();
             logger.info("Bear " + animal.getName() + " started hibernating");
-        } else {
-            throw new IllegalArgumentException("Provided animal is not bear");
-        }
-    }
-
-    @Override
-    public void stopHibernating(String id) throws SQLException, JsonProcessingException {
-        Animal animal = animalRepository.selectAnimalById(id);
-
-        if (animal instanceof Bear) {
+        } else if (animal instanceof Bear && action.equalsIgnoreCase("stop")) {
             ((Bear) animal).stopHibernate();
             logger.info("Bear " + animal.getName() + " stop hibernating");
         } else {
-            throw new IllegalArgumentException("Provided animal is not bear");
+            throw new AnimalNotFound("Provided animal is not bear");
         }
     }
 
@@ -142,7 +134,7 @@ public class AnimalServiceImpl implements AnimalService {
 
     }
 
-    public static AnimalService getInstance(){
+    public static AnimalService getInstance() {
         return INSTANCE;
     }
 

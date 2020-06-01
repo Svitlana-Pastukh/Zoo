@@ -22,9 +22,7 @@ public interface AnimalService {
 
     void deleteAnimal(String id) throws SQLException, JsonProcessingException, AnimalNotFound;
 
-    void startHibernating(String id) throws SQLException, JsonProcessingException, AnimalDoesNotExist;
-
-    void stopHibernating(String id) throws SQLException, JsonProcessingException;
+    void changeHibernationState(String id, String action) throws SQLException, JsonProcessingException, AnimalNotFound;
 
     void giveWaterToAnimalById(String id) throws SQLException, JsonProcessingException;
 
