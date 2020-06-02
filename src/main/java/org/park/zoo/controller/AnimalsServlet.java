@@ -1,6 +1,7 @@
 package org.park.zoo.controller;
 
-import org.park.zoo.animals.Animal;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.park.zoo.services.AnimalService;
 import org.park.zoo.services.AnimalServiceImpl;
 
@@ -9,14 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
 
 import static org.park.App.createJson;
 
 @WebServlet("/animals")
 public class AnimalsServlet extends HttpServlet {
+
+    private static final Logger logger = LogManager.getLogger(AnimalsServlet.class);
 
     private final AnimalService service;
 
@@ -30,19 +31,11 @@ public class AnimalsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
         try {
-            List<Animal> animals  = service.selectAllAnimals();
-
-            String animalsJson = createJson(animals);
-            resp.setContentType("application/json");
-
-            PrintWriter printWriter = resp.getWriter();
-            printWriter.write(animalsJson);
-            printWriter.close();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            String animalsJson = createJson(service.selectAllAnimals());
+            ServletUtils.setBody(resp, animalsJson);
+        } catch (SQLException exception) {
+            logger.error(exception);
         }
     }
 }

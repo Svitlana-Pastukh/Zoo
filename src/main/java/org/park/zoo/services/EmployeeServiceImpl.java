@@ -43,8 +43,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee createEmployee(String employeeJson) throws JsonProcessingException {
-        return createEmployeeFromJson(employeeJson);
+    public Employee createEmployee(String employeeJson) throws JsonProcessingException, SQLException {
+        Employee employee = createEmployeeFromJson(employeeJson);
+        employeeRepository.insertEmployee(employee);
+        return employee;
     }
 
     @Override

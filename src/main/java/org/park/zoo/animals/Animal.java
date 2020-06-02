@@ -1,6 +1,5 @@
 package org.park.zoo.animals;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -50,6 +49,7 @@ public class Animal implements Serializable {
     }
 
     protected Animal() {
+        this.id = UUID.randomUUID().toString();
     }
 
     public String getId() {
@@ -66,7 +66,8 @@ public class Animal implements Serializable {
             return App.createJson(this);
         } catch (JsonProcessingException e) {
             logger.error(e);
-        } return null;
+        }
+        return null;
     }
 
 

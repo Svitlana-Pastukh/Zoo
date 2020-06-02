@@ -45,8 +45,10 @@ public class AnimalServiceImpl implements AnimalService {
 
 
     @Override
-    public Animal createAnimal(String animalJson) throws JsonProcessingException {
-        return createAnimalFromJson(animalJson);
+    public Animal createAnimal(String animalJson) throws JsonProcessingException, SQLException {
+        Animal animal = createAnimalFromJson(animalJson);
+        animalRepository.insertAnimal(animal);
+        return animal;
     }
 
     @Override

@@ -41,6 +41,7 @@ public class Employee {
     }
 
     public Employee() {
+        this.employeeId = UUID.randomUUID().toString();
     }
 
     public int submitWorkHours(int hours) {

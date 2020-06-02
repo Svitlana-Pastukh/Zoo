@@ -1,5 +1,8 @@
 package org.park.zoo.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.park.zoo.animals.exceptions.EmployeeNotFound;
 import org.park.zoo.services.EmployeeService;
 import org.park.zoo.services.EmployeeServiceImpl;
@@ -15,34 +18,45 @@ import java.sql.SQLException;
 import static org.park.App.createJson;
 
 @WebServlet("/employee")
-public class GetEmployeeByIdServlet extends HttpServlet {
+public class EmployeeServlet extends HttpServlet {
+
+    private static final Logger logger = LogManager.getLogger(EmployeeServlet.class);
+
     private final EmployeeService service;
 
-    public GetEmployeeByIdServlet(EmployeeService service) {
+    public EmployeeServlet(EmployeeService service) {
         this.service = service;
     }
 
-    public GetEmployeeByIdServlet() {
+    public EmployeeServlet() {
         this.service = EmployeeServiceImpl.getInstance();
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String id = req.getParameter("id");
-
             Employee employee = service.selectEmployeeById(id);
-
             String employeeJson = createJson(employee);
-
-            resp.setContentType("application/json");
             ServletUtils.setBody(resp, employeeJson);
-
         } catch (EmployeeNotFound employeeNotFound) {
             resp.setStatus(404);
-
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+            ServletUtils.setBody(resp, "Employee not found");
+        } catch (SQLException | IOException exception) {
+            logger.error(exception);
         }
+    }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+        String body = ServletUtils.getBody(req);
+        try {
+            service.createEmployee(body);
+            resp.setStatus(201);
+        } catch (JsonProcessingException e) {
+            resp.setStatus(400);
+            ServletUtils.setBody(resp, "Bad request body ");
+        } catch (SQLException exception) {
+            logger.error(exception);
+        }
     }
 }

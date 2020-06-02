@@ -1,5 +1,7 @@
 package org.park.zoo.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.park.zoo.services.EmployeeService;
 import org.park.zoo.services.EmployeeServiceImpl;
 
@@ -14,6 +16,9 @@ import static org.park.App.createJson;
 
 @WebServlet("/employees")
 public class GetAllEmployees extends HttpServlet {
+
+    private static final Logger logger = LogManager.getLogger(GetAllEmployees.class);
+
     private final EmployeeService service;
 
     public GetAllEmployees(EmployeeService service) {
@@ -24,16 +29,12 @@ public class GetAllEmployees extends HttpServlet {
         this.service = EmployeeServiceImpl.getInstance();
     }
 
-
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         try {
-
             ServletUtils.setBody(resp, createJson(service.selectAllEmployees()));
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException exception) {
+            logger.error(exception);
         }
-
     }
 }
