@@ -16,7 +16,7 @@ public interface EmployeeService {
 
     Employee selectEmployeeById(String id) throws SQLException, JsonProcessingException, EmployeeNotFound;
 
-    void updateEmployee(Employee employee) throws SQLException, JsonProcessingException;
+    Employee updateEmployee(Employee employee) throws SQLException, JsonProcessingException;
 
     void deleteEmployee(String id) throws SQLException, JsonProcessingException, EmployeeNotFound;
 

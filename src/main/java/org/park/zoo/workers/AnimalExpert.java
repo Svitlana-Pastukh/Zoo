@@ -29,7 +29,9 @@ public class AnimalExpert extends Employee {
             logger.info("Gave {} kilos meat to: {}", calculateFoodAmount(animal.getWeight()), animal.getClass().getSimpleName());
         } else if (animal instanceof Herbivorous) {
             logger.info("Gave {} kilos of plants to: {}", calculateFoodAmount(animal.getWeight()), animal.getClass().getSimpleName());
-        } else throw new AnimalDoesNotExist("There is no such animal in the zoo!!!");
+        } else {
+            throw new AnimalDoesNotExist("There is no such animal in the zoo!!!");
+        }
     }
 
     private static int calculateFoodAmount(int animalWeight) {

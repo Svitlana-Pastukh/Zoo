@@ -26,42 +26,46 @@ public class AnimalRepositoryImpl implements AnimalRepository {
 
     @Override
     public void insertAnimals(List<Animal> list) throws SQLException, JsonProcessingException {
-        Statement statement = connection.createStatement();
-        for (Animal animal : list) {
+        try (Statement statement = connection.createStatement()) {
+            for (Animal animal : list) {
 
-            String json = createJson(animal);
-            String b = String.format("MERGE INTO animals KEY (id) VALUES ('%s', '%s')", animal.getId(), json);
-            statement.execute(b);
+                String json = createJson(animal);
+                String b = String.format("MERGE INTO animals KEY (id) VALUES ('%s', '%s')", animal.getId(), json);
+                statement.execute(b);
+            }
         }
     }
 
     @Override
     public List<Animal> selectAllAnimals() throws SQLException, JsonProcessingException {
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT animal FROM animals");
-        List<Animal> animals = new ArrayList<>();
-        while (resultSet.next()) {
-            animals.add(createAnimalFromJson(resultSet.getString(1)));
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT animal FROM animals")) {
+            List<Animal> animals = new ArrayList<>();
+            while (resultSet.next()) {
+                animals.add(createAnimalFromJson(resultSet.getString(1)));
+            }
+            return animals;
         }
-        return animals;
     }
 
     @Override
     public Animal selectAnimalById(String id) throws SQLException, JsonProcessingException {
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT animal FROM animals WHERE id='" + id + "';");
-        if (resultSet.next()) {
-            return createAnimalFromJson(resultSet.getString(1));
-        } else {
-            return null;
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT animal FROM animals WHERE id='" + id + "';")) {
+            if (resultSet.next()) {
+                return createAnimalFromJson(resultSet.getString(1));
+            } else {
+                return null;
+            }
         }
     }
 
     @Override
-    public void insertAnimal(Animal animal) throws SQLException, JsonProcessingException {
-        Statement statement = connection.createStatement();
-        statement.execute(String.format("MERGE INTO animals KEY (id) VALUES ('%s', '%s')", animal.getId(), createJson(animal)));
-
+    public Animal insertAnimal(Animal animal) throws SQLException, JsonProcessingException {
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(String.format("MERGE INTO animals KEY (id) VALUES ('%s', '%s')", animal.getId(), createJson(animal)));
+        }
+        return animal;
     }
 
     @Override

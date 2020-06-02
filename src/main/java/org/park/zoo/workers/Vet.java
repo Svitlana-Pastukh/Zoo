@@ -14,13 +14,16 @@ public class Vet extends Employee {
     public Vet() {
     }
 
-    public  void checkAnimal(Animal animal) {
+    public void checkAnimal(Animal animal) {
 
         long currentTimeMinusThirty = minusThirtyDays(System.currentTimeMillis());
         long timeVisit = animal.getLastVetVisit();
 
-        if (timeVisit == 0 || timeVisit > currentTimeMinusThirty) {
+        if (timeVisit == 0 || timeVisit < currentTimeMinusThirty) {
             animal.setLastVetVisit(System.currentTimeMillis());
+            logger.info("Vet checked animal: {} ", animal.getName());
+        } else {
+            logger.info("Animal has been already checked in the last 30 days");
         }
     }
 
@@ -28,5 +31,4 @@ public class Vet extends Employee {
         long thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000L;
         return currentMillis - thirtyDaysInMillis;
     }
-
 }

@@ -16,7 +16,7 @@ public interface AnimalRepository {
 
     Animal selectAnimalById(String id) throws SQLException, JsonProcessingException;
 
-    void insertAnimal(Animal animal) throws SQLException, JsonProcessingException;
+    Animal insertAnimal(Animal animal) throws SQLException, JsonProcessingException;
 
     void deleteAnimal(String id) throws SQLException, JsonProcessingException;
 

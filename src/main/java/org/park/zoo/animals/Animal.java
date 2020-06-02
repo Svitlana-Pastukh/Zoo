@@ -48,7 +48,7 @@ public class Animal implements Serializable {
         this(UUID.randomUUID().toString(), name, age, country, minTemperature, maxTemperature, weight);
     }
 
-    protected Animal() {
+    public Animal() {
         this.id = UUID.randomUUID().toString();
     }
 

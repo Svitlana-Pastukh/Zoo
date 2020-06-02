@@ -6,8 +6,6 @@ import org.apache.logging.log4j.Logger;
 import org.park.zoo.animals.Animal;
 import org.park.zoo.animals.exceptions.AnimalDoesNotExist;
 import org.park.zoo.animals.exceptions.EmployeeNotFound;
-import org.park.zoo.repositories.AnimalRepository;
-import org.park.zoo.repositories.AnimalRepositoryImpl;
 import org.park.zoo.repositories.EmployeeRepository;
 import org.park.zoo.repositories.EmployeeRepositoryImpl;
 import org.park.zoo.workers.Accountant;
@@ -23,22 +21,18 @@ import static org.park.App.createEmployeeFromJson;
 public class EmployeeServiceImpl implements EmployeeService {
     private static final Logger logger = LogManager.getLogger(EmployeeServiceImpl.class);
 
-    private final AnimalRepository animalRepository;
-
     private final EmployeeRepository employeeRepository;
 
     private static final EmployeeService INSTANCE = new EmployeeServiceImpl();
 
 
-    public EmployeeServiceImpl(AnimalRepository animalRepository, EmployeeRepository employeeRepository) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
 
-        this.animalRepository = animalRepository;
         this.employeeRepository = employeeRepository;
     }
 
     public EmployeeServiceImpl() {
 
-        this.animalRepository = new AnimalRepositoryImpl();
         this.employeeRepository = new EmployeeRepositoryImpl();
     }
 
@@ -69,8 +63,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void updateEmployee(Employee employee) throws SQLException, JsonProcessingException {
+    public Employee updateEmployee(Employee employee) throws SQLException, JsonProcessingException {
         employeeRepository.insertEmployee(employee);
+        return employee;
     }
 
     @Override
