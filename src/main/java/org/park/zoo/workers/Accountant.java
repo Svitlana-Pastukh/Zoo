@@ -33,11 +33,9 @@ public class Accountant extends Employee {
     }
 
     public int paySalary(Employee employee) {
-        int a = employee.getWorkedHours();
         int s = employee.getSalary() + calculateBonus(employee);
         employee.setWorkedHours(0);
-        logger.info(s);
-        logger.info(a);
+        logger.info("Completed salary payment for: {} amount: {}", employee.getEmployeeId(), s) ;
         return s;
     }
 }

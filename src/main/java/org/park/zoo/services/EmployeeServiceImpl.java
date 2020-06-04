@@ -98,17 +98,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void checkAnimal(Animal animal) throws SQLException, JsonProcessingException, EmployeeNotFound {
-        List<Employee> employees = employeeRepository.selectAllEmployees();
-        Vet vet = findVet(employees);
-        if (vet != null) {
-            vet.checkAnimal(animal);
-        } else throw new EmployeeNotFound("Cannot find Vet employee");
-
+        Employee vet = employeeRepository.selectEmployeeByPosition(Vet.class.getSimpleName());
+        if (vet instanceof Vet) {
+            ((Vet) vet).checkAnimal(animal);
+        } else {
+            throw new EmployeeNotFound("Cannot find Vet employee");
+        }
     }
 
     @Override
     public void feedAnimal(Animal animal) throws SQLException, JsonProcessingException, AnimalDoesNotExist, EmployeeNotFound {
-        Employee employee = employeeRepository.selectEmployeeByPosition("AnimalExpert");
+        Employee employee = employeeRepository.selectEmployeeByPosition(AnimalExpert.class.getSimpleName());
         if (employee instanceof AnimalExpert) {
             ((AnimalExpert) employee).feedAnimal(animal);
         } else throw new EmployeeNotFound("It is not an AnimalExpert");
@@ -117,7 +117,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public int calculateBonus(Employee employee) throws SQLException, JsonProcessingException, EmployeeNotFound {
-        Employee accountant = employeeRepository.selectEmployeeByPosition("Accountant");
+        Employee accountant = employeeRepository.selectEmployeeByPosition(Accountant.class.getSimpleName());
         if (accountant instanceof Accountant) {
             return ((Accountant) accountant).calculateBonus(employee);
         } else {
@@ -127,21 +127,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public int paySalary(Employee employee) throws EmployeeNotFound, SQLException, JsonProcessingException {
-        Employee accountant = employeeRepository.selectEmployeeByPosition("Accountant");
+        Employee accountant = employeeRepository.selectEmployeeByPosition(Accountant.class.getSimpleName());
         if (accountant instanceof Accountant) {
             return ((Accountant) accountant).paySalary(employee);
         } else {
             throw new EmployeeNotFound("It is not Accountant");
         }
     }
-
-    private Vet findVet(List<Employee> employees) {
-        for (Employee a : employees) {
-            if (a instanceof Vet) {
-                return (Vet) a;
-            }
-        }
-        return null;
-    }
 }
+
 
