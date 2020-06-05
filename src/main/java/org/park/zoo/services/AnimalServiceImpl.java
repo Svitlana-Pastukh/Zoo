@@ -69,8 +69,8 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void updateAnimal(Animal animal) throws SQLException, JsonProcessingException {
-        animalRepository.insertAnimal(animal);
+    public Animal updateAnimal(Animal animal) throws SQLException, JsonProcessingException {
+        return animalRepository.insertAnimal(animal);
     }
 
     @Override
@@ -99,9 +99,10 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void giveWaterToAnimalById(String id) throws SQLException, JsonProcessingException {
+    public boolean giveWaterToAnimalById(String id) throws SQLException, JsonProcessingException {
         Animal animal = animalRepository.selectAnimalById(id);
         animal.drinkWater();
+        return true;
     }
 
     @Override
@@ -120,11 +121,12 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void feedAnimal(Animal animal) throws AnimalDoesNotExist, SQLException, JsonProcessingException, EmployeeNotFound {
+    public boolean feedAnimal(Animal animal) throws AnimalDoesNotExist, SQLException, JsonProcessingException, EmployeeNotFound {
         List<Employee> employees = employeeRepository.selectAllEmployees();
         AnimalExpert animalExpert = findAnimalExpert(employees);
         if (animalExpert != null) {
             animalExpert.feedAnimal(animal);
+            return true;
         } else {
             throw new EmployeeNotFound("Cannot find an AnimalExpert employee");
         }

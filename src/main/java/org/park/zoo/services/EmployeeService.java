@@ -1,8 +1,6 @@
 package org.park.zoo.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.park.zoo.animals.Animal;
-import org.park.zoo.animals.exceptions.AnimalDoesNotExist;
 import org.park.zoo.animals.exceptions.EmployeeNotFound;
 import org.park.zoo.workers.Employee;
 
@@ -23,10 +21,6 @@ public interface EmployeeService {
     Employee selectEmployeeByPosition(String position) throws SQLException, JsonProcessingException, EmployeeNotFound;
 
     void initialize() throws SQLException, JsonProcessingException;
-
-    void checkAnimal(Animal animal) throws SQLException, JsonProcessingException, EmployeeNotFound;
-
-    void feedAnimal(Animal animal) throws SQLException, JsonProcessingException, AnimalDoesNotExist, EmployeeNotFound;
 
     int calculateBonus(Employee employee) throws SQLException, JsonProcessingException, EmployeeNotFound;
 

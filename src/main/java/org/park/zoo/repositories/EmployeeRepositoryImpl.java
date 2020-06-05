@@ -70,9 +70,10 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
-    public void insertEmployee(Employee employee) throws SQLException, JsonProcessingException {
+    public Employee insertEmployee(Employee employee) throws SQLException, JsonProcessingException {
         Statement statement = connection.createStatement();
         statement.execute(String.format("MERGE INTO employees KEY (id) VALUES ('%s', '%s', '%s')", employee.getEmployeeId(), createJson(employee), employee.getClass().getSimpleName()));
+        return employee;
     }
 
     @Override

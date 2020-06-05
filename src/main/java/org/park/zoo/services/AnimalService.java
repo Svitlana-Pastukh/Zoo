@@ -18,19 +18,19 @@ public interface AnimalService {
 
     Animal selectAnimalById(String id) throws SQLException, JsonProcessingException, AnimalNotFound;
 
-    void updateAnimal(Animal animal) throws SQLException, JsonProcessingException;
+    Animal updateAnimal(Animal animal) throws SQLException, JsonProcessingException;
 
     void deleteAnimal(String id) throws SQLException, JsonProcessingException, AnimalNotFound;
 
     void changeHibernationState(String id, String action) throws SQLException, JsonProcessingException, AnimalNotFound;
 
-    void giveWaterToAnimalById(String id) throws SQLException, JsonProcessingException;
+    boolean giveWaterToAnimalById(String id) throws SQLException, JsonProcessingException;
 
     void sendToVet(Animal animal) throws SQLException, JsonProcessingException, EmployeeNotFound;
 
     void addAnimalToEnclosure(Animal animal) throws SQLException, JsonProcessingException;
 
-    void feedAnimal(Animal animal) throws AnimalDoesNotExist, SQLException, JsonProcessingException, EmployeeNotFound;
+    boolean feedAnimal(Animal animal) throws AnimalDoesNotExist, SQLException, JsonProcessingException, EmployeeNotFound;
 
     void initialize() throws SQLException, JsonProcessingException;
 

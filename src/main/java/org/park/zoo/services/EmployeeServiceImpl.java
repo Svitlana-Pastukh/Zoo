@@ -64,8 +64,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee updateEmployee(Employee employee) throws SQLException, JsonProcessingException {
-        employeeRepository.insertEmployee(employee);
-        return employee;
+        return employeeRepository.insertEmployee(employee);
     }
 
     @Override
@@ -94,25 +93,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public static EmployeeService getInstance() {
         return INSTANCE;
-    }
-
-    @Override
-    public void checkAnimal(Animal animal) throws SQLException, JsonProcessingException, EmployeeNotFound {
-        Employee vet = employeeRepository.selectEmployeeByPosition(Vet.class.getSimpleName());
-        if (vet instanceof Vet) {
-            ((Vet) vet).checkAnimal(animal);
-        } else {
-            throw new EmployeeNotFound("Cannot find Vet employee");
-        }
-    }
-
-    @Override
-    public void feedAnimal(Animal animal) throws SQLException, JsonProcessingException, AnimalDoesNotExist, EmployeeNotFound {
-        Employee employee = employeeRepository.selectEmployeeByPosition(AnimalExpert.class.getSimpleName());
-        if (employee instanceof AnimalExpert) {
-            ((AnimalExpert) employee).feedAnimal(animal);
-        } else throw new EmployeeNotFound("It is not an AnimalExpert");
-
     }
 
     @Override

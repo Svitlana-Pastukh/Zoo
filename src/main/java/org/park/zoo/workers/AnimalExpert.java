@@ -23,6 +23,7 @@ public class AnimalExpert extends Employee {
     }
 
     public void feedAnimal(Animal animal) throws AnimalDoesNotExist {
+
         if (animal instanceof Carnivore && animal instanceof Herbivorous) {
             logger.info("Gave {} kilos of meat and plants to: {}", calculateFoodAmount(animal.getWeight()), animal.getClass().getSimpleName());
         } else if (animal instanceof Carnivore) {
