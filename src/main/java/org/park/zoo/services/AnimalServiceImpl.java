@@ -93,10 +93,13 @@ public class AnimalServiceImpl implements AnimalService {
         } else if (animal instanceof Bear && action.equalsIgnoreCase("stop")) {
             ((Bear) animal).stopHibernate();
             logger.info("Bear " + animal.getName() + " stop hibernating");
+        } else if (!action.equalsIgnoreCase("start") && !action.equalsIgnoreCase("stop")) {
+            throw new IllegalArgumentException("Bad action argument");
         } else {
             throw new AnimalNotFound("Provided animal is not bear");
         }
     }
+
 
     @Override
     public boolean giveWaterToAnimalById(String id) throws SQLException, JsonProcessingException {
@@ -106,11 +109,11 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void sendToVet(Animal animal) throws SQLException, JsonProcessingException, EmployeeNotFound {
-        List<Employee> employees = employeeRepository.selectAllEmployees();
-        Vet vet = findVet(employees);
-        if (vet != null) {
-            vet.checkAnimal(animal);
+    public boolean sendToVet(Animal animal) throws SQLException, JsonProcessingException, EmployeeNotFound {
+        Employee vet = employeeRepository.selectEmployeeByPosition(Vet.class.getSimpleName());
+        if (vet instanceof Vet) {
+            ((Vet) vet).checkAnimal(animal);
+            return true;
         } else {
             throw new EmployeeNotFound("Cannot find Vet employee");
         }
@@ -122,10 +125,9 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public boolean feedAnimal(Animal animal) throws AnimalDoesNotExist, SQLException, JsonProcessingException, EmployeeNotFound {
-        List<Employee> employees = employeeRepository.selectAllEmployees();
-        AnimalExpert animalExpert = findAnimalExpert(employees);
-        if (animalExpert != null) {
-            animalExpert.feedAnimal(animal);
+        Employee animalExpert = employeeRepository.selectEmployeeByPosition(AnimalExpert.class.getSimpleName());
+        if (animalExpert instanceof AnimalExpert) {
+            ((AnimalExpert) animalExpert).feedAnimal(animal);
             return true;
         } else {
             throw new EmployeeNotFound("Cannot find an AnimalExpert employee");
@@ -135,31 +137,13 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public void initialize() throws SQLException, JsonProcessingException {
         animalRepository.initialize();
-
     }
 
     public static AnimalService getInstance() {
         return INSTANCE;
     }
-
-    private AnimalExpert findAnimalExpert(List<Employee> employees) {
-        for (Employee a : employees) {
-            if (a instanceof AnimalExpert) {
-                return (AnimalExpert) a;
-            }
-        }
-        return null;
-    }
-
-    private Vet findVet(List<Employee> employees) {
-        for (Employee a : employees) {
-            if (a instanceof Vet) {
-                return (Vet) a;
-            }
-        }
-        return null;
-    }
 }
+
 
 
 

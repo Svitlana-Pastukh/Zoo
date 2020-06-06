@@ -80,33 +80,6 @@ class EmployeeServiceImplTest {
         assertNotNull(EmployeeServiceImpl.getInstance());
     }
 
-//    @Test
-//    void checkAnimal() throws EmployeeNotFound, SQLException, JsonProcessingException {
-//        Animal animal = new Animal();
-//        Vet vet = new Vet();
-//        when(repository.selectEmployeeByPosition(Vet.class.getSimpleName())).thenReturn(vet);
-//        service.checkAnimal(animal);
-//        assertTrue(animal.getLastVetVisit() > 0);
-//        verify(repository, times(1)).selectEmployeeByPosition(Vet.class.getSimpleName());
-//    }
-
-//    @Test
-//    void checkAnimalNegative() throws SQLException, JsonProcessingException {
-//        Animal animal = new Animal();
-//        when(repository.selectEmployeeByPosition(Vet.class.getSimpleName())).thenReturn(null);
-//        assertThrows(EmployeeNotFound.class, () -> service.checkAnimal(animal), "Cannot find Vet employee");
-//        assertEquals(animal.getLastVetVisit(), 0);
-//        verify(repository, times(1)).selectEmployeeByPosition(Vet.class.getSimpleName());
-//    }
-
-//    @Test
-//    void feedAnimal() throws SQLException, JsonProcessingException, AnimalDoesNotExist, EmployeeNotFound {
-//        Animal animal = new Bear();
-//        AnimalExpert animalExpert = new AnimalExpert();
-//        when(repository.selectEmployeeByPosition(AnimalExpert.class.getSimpleName())).thenReturn(animalExpert);
-//        assertTrue(service.feedAnimal(animal));
-//    }
-
     @Test
     void calculateBonus() throws SQLException, JsonProcessingException, EmployeeNotFound {
         AnimalExpert animalExpert = new AnimalExpert("Bob", "Ice", 32, 3750);

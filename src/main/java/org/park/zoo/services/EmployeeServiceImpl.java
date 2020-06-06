@@ -3,15 +3,11 @@ package org.park.zoo.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.park.zoo.animals.Animal;
-import org.park.zoo.animals.exceptions.AnimalDoesNotExist;
 import org.park.zoo.animals.exceptions.EmployeeNotFound;
 import org.park.zoo.repositories.EmployeeRepository;
 import org.park.zoo.repositories.EmployeeRepositoryImpl;
 import org.park.zoo.workers.Accountant;
-import org.park.zoo.workers.AnimalExpert;
 import org.park.zoo.workers.Employee;
-import org.park.zoo.workers.Vet;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -97,21 +93,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public int calculateBonus(Employee employee) throws SQLException, JsonProcessingException, EmployeeNotFound {
-        Employee accountant = employeeRepository.selectEmployeeByPosition(Accountant.class.getSimpleName());
-        if (accountant instanceof Accountant) {
-            return ((Accountant) accountant).calculateBonus(employee);
+        Accountant accountant = (Accountant) employeeRepository.selectEmployeeByPosition(Accountant.class.getSimpleName());
+        if (accountant != null) {
+            return accountant.calculateBonus(employee);
         } else {
-            throw new EmployeeNotFound("It is not Accountant");
+            throw new EmployeeNotFound("Accountant not found");
         }
     }
 
     @Override
     public int paySalary(Employee employee) throws EmployeeNotFound, SQLException, JsonProcessingException {
-        Employee accountant = employeeRepository.selectEmployeeByPosition(Accountant.class.getSimpleName());
-        if (accountant instanceof Accountant) {
-            return ((Accountant) accountant).paySalary(employee);
+        Accountant accountant = (Accountant) employeeRepository.selectEmployeeByPosition(Accountant.class.getSimpleName());
+        if (accountant != null) {
+            return accountant.paySalary(employee);
         } else {
-            throw new EmployeeNotFound("It is not Accountant");
+            throw new EmployeeNotFound("Accountant not found");
         }
     }
 }

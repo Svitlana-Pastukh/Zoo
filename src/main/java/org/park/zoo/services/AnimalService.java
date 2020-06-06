@@ -26,7 +26,7 @@ public interface AnimalService {
 
     boolean giveWaterToAnimalById(String id) throws SQLException, JsonProcessingException;
 
-    void sendToVet(Animal animal) throws SQLException, JsonProcessingException, EmployeeNotFound;
+    boolean sendToVet(Animal animal) throws SQLException, JsonProcessingException, EmployeeNotFound;
 
     void addAnimalToEnclosure(Animal animal) throws SQLException, JsonProcessingException;
 

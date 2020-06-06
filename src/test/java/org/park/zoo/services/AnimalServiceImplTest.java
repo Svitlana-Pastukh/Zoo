@@ -7,12 +7,16 @@ import org.park.zoo.animals.Animal;
 import org.park.zoo.animals.Bear;
 import org.park.zoo.animals.Wolf;
 import org.park.zoo.animals.Zebra;
+import org.park.zoo.animals.exceptions.AnimalDoesNotExist;
 import org.park.zoo.animals.exceptions.AnimalNotFound;
+import org.park.zoo.animals.exceptions.EmployeeNotFound;
 import org.park.zoo.repositories.AnimalRepository;
 import org.park.zoo.repositories.AnimalRepositoryImpl;
 import org.park.zoo.repositories.EmployeeRepository;
 import org.park.zoo.repositories.EmployeeRepositoryImpl;
+import org.park.zoo.workers.AnimalExpert;
 import org.park.zoo.workers.Employee;
+import org.park.zoo.workers.Vet;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,9 +29,7 @@ class AnimalServiceImplTest {
 
     AnimalRepository animalRepository = mock(AnimalRepositoryImpl.class);
     EmployeeRepository employeeRepository = mock(EmployeeRepositoryImpl.class);
-    EmployeeService employeeService = new EmployeeServiceImpl(employeeRepository);
     AnimalService animalService = new AnimalServiceImpl(animalRepository, employeeRepository);
-
 
     @Test
     void createAnimal() throws JsonProcessingException, SQLException {
@@ -69,12 +71,41 @@ class AnimalServiceImplTest {
         verify(animalRepository, times(1)).deleteAnimal(animal.getId());
     }
 
-//    @Test
-//    void changeHibernationState() throws AnimalNotFound, SQLException, JsonProcessingException {
-//        Bear bear = new Bear();
-//        String a = bear.getId();
-//        animalService.changeHibernationState(a, "True");
-//    }
+    @Test
+    void changeHibernationStateStart() throws AnimalNotFound, SQLException, JsonProcessingException {
+        Animal bear = new Bear();
+        String a = bear.getId();
+        when(animalRepository.selectAnimalById(a)).thenReturn(bear);
+        animalService.changeHibernationState(a, "Start");
+        verify(animalRepository, times(1)).selectAnimalById(a);
+    }
+
+    @Test
+    void changeHibernationStateStop() throws AnimalNotFound, SQLException, JsonProcessingException {
+        Animal bear = new Bear();
+        String a = bear.getId();
+        when(animalRepository.selectAnimalById(a)).thenReturn(bear);
+        animalService.changeHibernationState(a, "Stop");
+        verify(animalRepository, times(1)).selectAnimalById(a);
+    }
+
+    @Test
+    void changeHibernationStateBadAction() throws SQLException, JsonProcessingException {
+        Animal bear = new Bear();
+        String a = bear.getId();
+        when(animalRepository.selectAnimalById(a)).thenReturn(bear);
+        assertThrows(IllegalArgumentException.class, () -> animalService.changeHibernationState(a, "True"), "Bad action argument");
+        verify(animalRepository, times(1)).selectAnimalById(a);
+    }
+
+    @Test
+    void changeHibernationStateIncorrectAnimal() throws SQLException, JsonProcessingException {
+        Animal zebra = new Zebra();
+        String a = zebra.getId();
+        when(animalRepository.selectAnimalById(a)).thenReturn(zebra);
+        assertThrows(AnimalNotFound.class, () -> animalService.changeHibernationState(a, "Start"), "Provided animal is not bear");
+        verify(animalRepository, times(1)).selectAnimalById(a);
+    }
 
     @Test
     void giveWaterToAnimalById() throws SQLException, JsonProcessingException {
@@ -82,11 +113,26 @@ class AnimalServiceImplTest {
         String a = animal.getId();
         when(animalRepository.selectAnimalById(a)).thenReturn(animal);
         assertTrue(animalService.giveWaterToAnimalById(a));
-        verify(animalRepository,times(1)).selectAnimalById(a);
+        verify(animalRepository, times(1)).selectAnimalById(a);
     }
 
     @Test
-    void sendToVet() {
+    void sendToVet() throws SQLException, JsonProcessingException, EmployeeNotFound {
+        Animal animal = new Animal();
+        Vet vet = new Vet();
+        when(employeeRepository.selectEmployeeByPosition(Vet.class.getSimpleName())).thenReturn(vet);
+        animalService.sendToVet(animal);
+        assertTrue(animal.getLastVetVisit() > 0);
+        verify(employeeRepository, times(1)).selectEmployeeByPosition(Vet.class.getSimpleName());
+    }
+
+    @Test
+    void SendToVetNegative() throws SQLException, JsonProcessingException {
+        Animal animal = new Animal();
+        when(employeeRepository.selectEmployeeByPosition(Vet.class.getSimpleName())).thenReturn(null);
+        assertThrows(EmployeeNotFound.class, () -> animalService.sendToVet(animal), "Cannot find Vet employee");
+        assertEquals(animal.getLastVetVisit(), 0);
+        verify(employeeRepository, times(1)).selectEmployeeByPosition(Vet.class.getSimpleName());
     }
 
     @Test
@@ -94,14 +140,30 @@ class AnimalServiceImplTest {
     }
 
     @Test
-    void feedAnimal() {
+    void feedAnimalNegative() throws SQLException, JsonProcessingException, AnimalDoesNotExist, EmployeeNotFound {
+        Animal zebra = new Zebra("Po ", 4, "Africa", 15, 45, 200);
+        AnimalExpert animalExpert = new AnimalExpert();
+        when(employeeRepository.selectEmployeeByPosition(AnimalExpert.class.getSimpleName())).thenReturn(animalExpert);
+        assertTrue(animalService.feedAnimal(zebra));
+        verify(employeeRepository, times(1)).selectEmployeeByPosition(AnimalExpert.class.getSimpleName());
     }
 
     @Test
-    void initialize() {
+    void feedAnimal() throws SQLException, JsonProcessingException {
+        Animal zebra = new Zebra();
+        when(employeeRepository.selectEmployeeByPosition(AnimalExpert.class.getSimpleName())).thenReturn(null);
+        assertThrows(EmployeeNotFound.class, () -> animalService.feedAnimal(zebra), "Cannot find an AnimalExpert employee");
+        verify(employeeRepository, times(1)).selectEmployeeByPosition(AnimalExpert.class.getSimpleName());
+    }
+
+    @Test
+    void initialize() throws SQLException, JsonProcessingException {
+        animalService.initialize();
+        verify(animalRepository, times(1)).initialize();
     }
 
     @Test
     void getInstance() {
+        assertNotNull(AnimalServiceImpl.getInstance());
     }
 }
