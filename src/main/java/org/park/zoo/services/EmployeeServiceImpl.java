@@ -65,7 +65,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void deleteEmployee(String id) throws SQLException, JsonProcessingException, EmployeeNotFound {
-        if (id != null && !id.isBlank()) {
+        if (id != null && !id.isBlank() && employeeRepository.selectEmployeeById(id) != null) {
             employeeRepository.deleteEmployee(id);
         } else {
             throw new EmployeeNotFound("inappropriate id");
@@ -76,7 +76,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee selectEmployeeByPosition(String position) throws SQLException, JsonProcessingException, EmployeeNotFound {
 
         if (position != null && !position.isBlank()) {
-            return employeeRepository.selectEmployeeByPosition(position);
+            Employee employee = employeeRepository.selectEmployeeByPosition(position);
+            if (employee != null) {
+                return employee;
+            } else {
+                throw new EmployeeNotFound("such employee not found");
+            }
         } else {
             throw new EmployeeNotFound("inappropriate position");
         }
@@ -97,7 +102,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (accountant != null) {
             return accountant.calculateBonus(employee);
         } else {
-            throw new EmployeeNotFound("Accountant not found");
+            throw new EmployeeNotFound("Employee is not Accountant");
         }
     }
 
@@ -107,7 +112,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (accountant != null) {
             return accountant.paySalary(employee);
         } else {
-            throw new EmployeeNotFound("Accountant not found");
+            throw new EmployeeNotFound("Employee is not Accountant");
         }
     }
 }

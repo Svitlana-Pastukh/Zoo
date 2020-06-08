@@ -3,6 +3,7 @@ package org.park.zoo.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.park.App;
+import org.park.zoo.animals.exceptions.AnimalNotFound;
 import org.park.zoo.animals.exceptions.EmployeeNotFound;
 import org.park.zoo.repositories.EmployeeRepository;
 import org.park.zoo.repositories.EmployeeRepositoryImpl;
@@ -48,6 +49,14 @@ class EmployeeServiceImplTest {
     }
 
     @Test
+    void selectEmployeeWithIncorrectId() throws SQLException, JsonProcessingException {
+        String a = "asd123";
+        when(repository.selectEmployeeById(a)).thenReturn(null);
+        assertThrows(EmployeeNotFound.class, () -> service.selectEmployeeById(a), "Correct id");
+        verify(repository, times(1)).selectEmployeeById(a);
+    }
+
+    @Test
     void updateEmployee() throws SQLException, JsonProcessingException {
         Employee employee = new Employee();
         when(repository.insertEmployee(employee)).thenReturn(employee);
@@ -58,8 +67,28 @@ class EmployeeServiceImplTest {
     @Test
     void deleteEmployee() throws SQLException, JsonProcessingException, EmployeeNotFound {
         Employee employee = new Employee();
-        service.deleteEmployee(employee.getEmployeeId());
-        verify(repository, times(1)).deleteEmployee(employee.getEmployeeId());
+        String a = employee.getEmployeeId();
+        when(repository.selectEmployeeById(a)).thenReturn(employee);
+        service.deleteEmployee(a);
+        verify(repository, times(1)).deleteEmployee(a);
+    }
+
+    @Test
+    void deleteEmployeeWithIncorrectId() throws SQLException, JsonProcessingException {
+        String a = "123asd";
+        when(repository.selectEmployeeById(a)).thenReturn(null);
+        assertThrows(EmployeeNotFound.class, () -> service.selectEmployeeById(a), "Correct id");
+        verify(repository, times(1)).selectEmployeeById(a);
+        verify(repository, times(0)).deleteEmployee(a);
+    }
+
+    @Test
+    void deleteEmployeeWithNull() throws SQLException, JsonProcessingException {
+        String a = null;
+        when(repository.selectEmployeeById(a)).thenReturn(null);
+        assertThrows(EmployeeNotFound.class, () -> service.deleteEmployee(a), "Id not null");
+        verify(repository, times(0)).selectEmployeeById(a);
+        verify(repository, times(0)).deleteEmployee(a);
     }
 
     @Test
@@ -67,6 +96,22 @@ class EmployeeServiceImplTest {
         Accountant accountant = new Accountant("Anna", "Gray", 22, 2500);
         when(repository.selectEmployeeByPosition("Accountant")).thenReturn(accountant);
         assertEquals(accountant, service.selectEmployeeByPosition(accountant.getClass().getSimpleName()));
+    }
+
+    @Test
+    void selectEmployeeByPositionWithIncorrectPosition() throws SQLException, JsonProcessingException {
+        String a = "Doctor123";
+        when(repository.selectEmployeeByPosition(a)).thenReturn(null);
+        assertThrows(EmployeeNotFound.class, () -> service.selectEmployeeByPosition("Doctor"), "Employee with doctor123 position exist");
+        verify(repository, times(0)).selectEmployeeByPosition(a);
+    }
+
+    @Test
+    void selectEmployeeWithNull() throws SQLException, JsonProcessingException {
+        String a = null;
+        when(repository.selectEmployeeByPosition(a)).thenReturn(null);
+        assertThrows(EmployeeNotFound.class, () -> service.selectEmployeeByPosition(a), "Position is not null");
+        verify(repository, times(0)).selectEmployeeByPosition(a);
     }
 
     @Test
@@ -92,6 +137,26 @@ class EmployeeServiceImplTest {
     }
 
     @Test
+    void calculateBonusIncorrectEmployee() throws SQLException, JsonProcessingException {
+        AnimalExpert animalExpert = new AnimalExpert("Bob", "Ice", 32, 3750);
+        animalExpert.setWorkedHours(290);
+        String a = "Doctor";
+        when(repository.selectEmployeeByPosition(a)).thenReturn(null);
+        assertThrows(EmployeeNotFound.class, () -> service.calculateBonus(animalExpert), "Position is Accountant");
+        verify(repository, times(0)).selectEmployeeByPosition(a);
+    }
+
+    @Test
+    void calculateBonusWithNull() throws SQLException, JsonProcessingException {
+        AnimalExpert animalExpert = new AnimalExpert("Bob", "Ice", 32, 3750);
+        animalExpert.setWorkedHours(290);
+        String a = null;
+        when(repository.selectEmployeeByPosition(a)).thenReturn(null);
+        assertThrows(EmployeeNotFound.class, () -> service.calculateBonus(animalExpert), "Position is not null");
+        verify(repository, times(0)).selectEmployeeByPosition(a);
+    }
+
+    @Test
     void paySalary() throws SQLException, JsonProcessingException, EmployeeNotFound {
         AnimalExpert animalExpert = new AnimalExpert("Bob", "Ice", 32, 3750);
         animalExpert.setWorkedHours(290);
@@ -99,5 +164,25 @@ class EmployeeServiceImplTest {
         when(repository.selectEmployeeByPosition(Accountant.class.getSimpleName())).thenReturn(accountant);
         assertEquals(6990, service.paySalary(animalExpert));
         verify(repository, times(1)).selectEmployeeByPosition(Accountant.class.getSimpleName());
+    }
+
+    @Test
+    void paySalaryIncorrectEmployee() throws SQLException, JsonProcessingException {
+        AnimalExpert animalExpert = new AnimalExpert("Bob", "Ice", 32, 3750);
+        animalExpert.setWorkedHours(290);
+        String a = "Doctor";
+        when(repository.selectEmployeeByPosition(a)).thenReturn(null);
+        assertThrows(EmployeeNotFound.class, () -> service.paySalary(animalExpert), "Position is Accountant");
+        verify(repository, times(0)).selectEmployeeByPosition(a);
+    }
+
+    @Test
+    void paySalaryWithNull() throws SQLException, JsonProcessingException {
+        AnimalExpert animalExpert = new AnimalExpert("Bob", "Ice", 32, 3750);
+        animalExpert.setWorkedHours(290);
+        String a = null;
+        when(repository.selectEmployeeByPosition(a)).thenReturn(null);
+        assertThrows(EmployeeNotFound.class, () -> service.paySalary(animalExpert), "Position is not null");
+        verify(repository, times(0)).selectEmployeeByPosition(a);
     }
 }

@@ -57,6 +57,14 @@ class AnimalServiceImplTest {
     }
 
     @Test
+    void selectAnimalWithIncorrectId() throws SQLException, JsonProcessingException {
+        String a = "asd123";
+        when(animalRepository.selectAnimalById(a)).thenReturn(null);
+        assertThrows(AnimalNotFound.class, () -> animalService.selectAnimalById(a), "Incorrect id");
+        verify(animalRepository, times(1)).selectAnimalById(a);
+    }
+
+    @Test
     void updateAnimal() throws SQLException, JsonProcessingException {
         Animal animal = new Animal();
         when(animalRepository.insertAnimal(animal)).thenReturn(animal);
@@ -67,8 +75,28 @@ class AnimalServiceImplTest {
     @Test
     void deleteAnimal() throws AnimalNotFound, SQLException, JsonProcessingException {
         Animal animal = new Animal();
+        String a = animal.getId();
+        when(animalRepository.selectAnimalById(a)).thenReturn(animal);
         animalService.deleteAnimal(animal.getId());
         verify(animalRepository, times(1)).deleteAnimal(animal.getId());
+    }
+
+    @Test
+    void deleteAnimalNegative() throws SQLException, JsonProcessingException {
+        String a = "123asd";
+        when(animalRepository.selectAnimalById(a)).thenReturn(null);
+        assertThrows(AnimalNotFound.class, () -> animalService.deleteAnimal(a), "Correct id");
+        verify(animalRepository, times(1)).selectAnimalById(a);
+        verify(animalRepository, times(0)).deleteAnimal(a);
+    }
+
+    @Test
+    void deleteAnimalWithNull() throws SQLException, JsonProcessingException {
+        String a = null;
+        when(animalRepository.selectAnimalById(a)).thenReturn(null);
+        assertThrows(AnimalNotFound.class, () -> animalService.deleteAnimal(a), "Id not null");
+        verify(animalRepository, times(0)).selectAnimalById(a);
+        verify(animalRepository, times(0)).deleteAnimal(a);
     }
 
     @Test

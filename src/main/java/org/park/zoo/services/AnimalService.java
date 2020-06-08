@@ -28,8 +28,6 @@ public interface AnimalService {
 
     boolean sendToVet(Animal animal) throws SQLException, JsonProcessingException, EmployeeNotFound;
 
-    void addAnimalToEnclosure(Animal animal) throws SQLException, JsonProcessingException;
-
     boolean feedAnimal(Animal animal) throws AnimalDoesNotExist, SQLException, JsonProcessingException, EmployeeNotFound;
 
     void initialize() throws SQLException, JsonProcessingException;

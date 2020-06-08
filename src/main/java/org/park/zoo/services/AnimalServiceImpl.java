@@ -75,7 +75,7 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public void deleteAnimal(String id) throws SQLException, JsonProcessingException, AnimalNotFound {
-        if (id != null && !id.isBlank()) {
+        if (id != null && !id.isBlank() && animalRepository.selectAnimalById(id) != null) {
             animalRepository.deleteAnimal(id);
         } else {
             throw new AnimalNotFound("inappropriate id");
@@ -117,10 +117,6 @@ public class AnimalServiceImpl implements AnimalService {
         } else {
             throw new EmployeeNotFound("Cannot find Vet employee");
         }
-    }
-
-    @Override
-    public void addAnimalToEnclosure(Animal animal) {
     }
 
     @Override
