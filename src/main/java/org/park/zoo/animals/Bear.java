@@ -24,6 +24,17 @@ public class Bear extends Animal implements Herbivorous, Carnivore {
     public Bear() {
     }
 
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public boolean isHibernating() {
+        return hibernating;
+    }
+
+    public void setHibernating(boolean hibernating) {
+        this.hibernating = hibernating;
+    }
 
     public void startHibernate() {
         logger.info("Bear " + getName() + " started hibernating");

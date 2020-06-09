@@ -19,7 +19,7 @@ import org.park.zoo.workers.Vet;
 import java.sql.SQLException;
 import java.util.List;
 
-import static org.park.App.createAnimalFromJson;
+import static org.park.MapperUtil.createAnimalFromJson;
 
 public class AnimalServiceImpl implements AnimalService {
 

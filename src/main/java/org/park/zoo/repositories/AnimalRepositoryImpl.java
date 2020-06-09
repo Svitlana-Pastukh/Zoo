@@ -11,12 +11,20 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.park.App.createAnimalFromJson;
-import static org.park.App.createJson;
+import static org.park.MapperUtil.createAnimalFromJson;
+import static org.park.MapperUtil.createJson;
 
 public class AnimalRepositoryImpl implements AnimalRepository {
 
-    private final Connection connection = ConnectionSingleton.getConnection();
+    private final Connection connection;
+
+    public AnimalRepositoryImpl() {
+        this.connection = ConnectionSingleton.getConnection();
+    }
+
+    public AnimalRepositoryImpl(Connection connection) {
+        this.connection = connection;
+    }
 
     @Override
     public void createAnimalsTable() throws SQLException {

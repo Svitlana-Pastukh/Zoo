@@ -5,9 +5,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.park.App;
+import org.park.MapperUtil;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
@@ -63,7 +64,7 @@ public class Animal implements Serializable {
     @Override
     public String toString() {
         try {
-            return App.createJson(this);
+            return MapperUtil.createJson(this);
         } catch (JsonProcessingException e) {
             logger.error(e);
         }
@@ -109,6 +110,25 @@ public class Animal implements Serializable {
 
     public void setLastVetVisit(long lastVetVisit) {
         this.lastVetVisit = lastVetVisit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Animal animal = (Animal) o;
+        return age == animal.age &&
+                minTemperature == animal.minTemperature &&
+                maxTemperature == animal.maxTemperature &&
+                weight == animal.weight &&
+                id.equals(animal.id) &&
+                Objects.equals(name, animal.name) &&
+                Objects.equals(country, animal.country);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, age, country, minTemperature, maxTemperature, weight);
     }
 }
 

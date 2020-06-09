@@ -1,8 +1,6 @@
 package org.park.zoo.repositories;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.park.zoo.repositories.utils.ConnectionSingleton;
 import org.park.zoo.workers.*;
 
@@ -13,11 +11,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.park.App.createEmployeeFromJson;
-import static org.park.App.createJson;
+import static org.park.MapperUtil.createEmployeeFromJson;
+import static org.park.MapperUtil.createJson;
 
 public class EmployeeRepositoryImpl implements EmployeeRepository {
-    private static final Logger logger = LogManager.getLogger(EmployeeRepositoryImpl.class);
 
     private final Connection connection;
 

@@ -2,8 +2,7 @@ package org.park.zoo.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
-import org.park.App;
-import org.park.zoo.animals.exceptions.AnimalNotFound;
+import org.park.MapperUtil;
 import org.park.zoo.animals.exceptions.EmployeeNotFound;
 import org.park.zoo.repositories.EmployeeRepository;
 import org.park.zoo.repositories.EmployeeRepositoryImpl;
@@ -26,7 +25,7 @@ class EmployeeServiceImplTest {
     @Test
     void createEmployee() throws JsonProcessingException, SQLException {
         Employee employee = new Employee();
-        assertEquals(service.createEmployee(App.createJson(employee)).getEmployeeId(), employee.getEmployeeId());
+        assertEquals(service.createEmployee(MapperUtil.createJson(employee)).getEmployeeId(), employee.getEmployeeId());
     }
 
     @Test
@@ -54,6 +53,13 @@ class EmployeeServiceImplTest {
         when(repository.selectEmployeeById(a)).thenReturn(null);
         assertThrows(EmployeeNotFound.class, () -> service.selectEmployeeById(a), "Correct id");
         verify(repository, times(1)).selectEmployeeById(a);
+    }
+
+    @Test
+    void selectEmployeeWithNullId() throws SQLException, JsonProcessingException {
+        String a = null;
+        assertThrows(EmployeeNotFound.class, () -> service.selectEmployeeById(a), "Provided id is not null");
+        verify(repository, times(0)).selectEmployeeById(a);
     }
 
     @Test

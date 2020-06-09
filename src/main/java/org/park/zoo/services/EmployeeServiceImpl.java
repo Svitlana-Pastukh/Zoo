@@ -12,7 +12,7 @@ import org.park.zoo.workers.Employee;
 import java.sql.SQLException;
 import java.util.List;
 
-import static org.park.App.createEmployeeFromJson;
+import static org.park.MapperUtil.createEmployeeFromJson;
 
 public class EmployeeServiceImpl implements EmployeeService {
     private static final Logger logger = LogManager.getLogger(EmployeeServiceImpl.class);

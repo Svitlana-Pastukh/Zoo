@@ -27,6 +27,14 @@ public class Wolf extends Animal implements Carnivore {
     public void drinkWater() {
         logger.info("Wolf " + getName() + " drink water");
     }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 }
 
 

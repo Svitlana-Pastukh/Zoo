@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import static org.park.App.createJson;
+import static org.park.MapperUtil.createJson;
 
 @WebServlet("/employee")
 public class EmployeeServlet extends HttpServlet {

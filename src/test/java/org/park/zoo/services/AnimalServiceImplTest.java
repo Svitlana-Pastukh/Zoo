@@ -2,7 +2,7 @@ package org.park.zoo.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
-import org.park.App;
+import org.park.MapperUtil;
 import org.park.zoo.animals.Animal;
 import org.park.zoo.animals.Bear;
 import org.park.zoo.animals.Wolf;
@@ -15,7 +15,6 @@ import org.park.zoo.repositories.AnimalRepositoryImpl;
 import org.park.zoo.repositories.EmployeeRepository;
 import org.park.zoo.repositories.EmployeeRepositoryImpl;
 import org.park.zoo.workers.AnimalExpert;
-import org.park.zoo.workers.Employee;
 import org.park.zoo.workers.Vet;
 
 import java.sql.SQLException;
@@ -34,7 +33,7 @@ class AnimalServiceImplTest {
     @Test
     void createAnimal() throws JsonProcessingException, SQLException {
         Animal animal = new Animal();
-        assertEquals(animalService.createAnimal(App.createJson(animal)).getId(), animal.getId());
+        assertEquals(animalService.createAnimal(MapperUtil.createJson(animal)).getId(), animal.getId());
     }
 
     @Test
