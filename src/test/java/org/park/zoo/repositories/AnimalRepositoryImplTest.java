@@ -38,8 +38,8 @@ class AnimalRepositoryImplTest {
     @Test
     void createAnimalsTable() throws SQLException {
         String query = "CREATE TABLE animals(id VARCHAR(40) NOT NULL, animal TEXT, PRIMARY KEY (id));";
-        when(statement.execute(query)).thenReturn(true);
-        assertTrue(statement.execute(query));
+        repository.createAnimalsTable();
+        verify(connection,times(1)).createStatement();
         verify(statement, times(1)).execute(query);
     }
 
@@ -99,25 +99,51 @@ class AnimalRepositoryImplTest {
                         "\"maxTemperature\":25,\"weight\":400,\"lastVetVisit\":0,\"color\":\"Black\",\"hibernating\":false})");
         List<Animal> animals1 = repository.selectAllAnimals();
         assertEquals(animals, animals1);
-        verify(statement,times(1)).executeQuery(any());
+        verify(statement, times(1)).executeQuery(any());
         verify(resultSet, times(2)).next();
         verify(resultSet, times(1)).getString(1);
-
     }
 
     @Test
-    void selectAnimalById() {
+    void selectAnimalById() throws SQLException, JsonProcessingException {
+        String id = "a4d49700-b72d-42b3-bce7-28d9bb80d25b";
+        when(resultSet.next()).thenReturn(true);
+        when(resultSet.getString(1)).thenReturn(
+                "{\"@type\":\"Bear\",\"id\":\"a4d49700-b72d-42b3-bce7-28d9bb80d25b\"," +
+                        "\"name\":\"Fred\",\"age\":5,\"country\":\"USA\",\"minTemperature\":-10," +
+                        "\"maxTemperature\":25,\"weight\":400,\"lastVetVisit\":0,\"color\":\"Black\",\"hibernating\":false})");
+        Animal animal = repository.selectAnimalById("a4d49700-b72d-42b3-bce7-28d9bb80d25b");
+        assertEquals(id, animal.getId());
+        verify(statement, times(1)).executeQuery(any());
+        verify(resultSet, times(1)).next();
+        verify(resultSet, times(1)).getString(1);
     }
 
     @Test
-    void insertAnimal() {
+    void insertAnimal() throws SQLException, JsonProcessingException {
+        Giraffe giraffe = new Giraffe("ca35c178-10e2-42a5-9cf2-23bf272892ec", "Tim", 1, "Africa", 15, 50, 800);
+        String s = "MERGE INTO animals KEY (id) VALUES ('ca35c178-10e2-42a5-9cf2-23bf272892ec', " +
+                "'{\"@type\":\"Giraffe\",\"id\":\"ca35c178-10e2-42a5-9cf2-23bf272892ec\"," +
+                "\"name\":\"Tim\",\"age\":1,\"country\":\"Africa\",\"minTemperature\":15," +
+                "\"maxTemperature\":50,\"weight\":800,\"lastVetVisit\":0}')";
+        assertEquals(repository.insertAnimal(giraffe), giraffe);
+        verify(statement, times(1)).execute(s);
+        verify(connection, times(1)).createStatement();
     }
 
     @Test
-    void deleteAnimal() {
+    void deleteAnimal() throws SQLException, JsonProcessingException {
+        Giraffe giraffe = new Giraffe("ca35c178-10e2-42a5-9cf2-23bf272892ec", "Tim", 1, "Africa", 15, 50, 800);
+        String id = "ca35c178-10e2-42a5-9cf2-23bf272892ec";
+        assertEquals(id, giraffe.getId());
+        repository.deleteAnimal(id);
+        verify(connection, times(1)).createStatement();
+        verify(statement, times(1)).execute(any());
     }
-
     @Test
-    void initialize() {
+    void initialize() throws SQLException, JsonProcessingException {
+        repository.initialize();
+        verify(connection, times(2)).createStatement();
+        verify(statement,times(6)).execute(any());
     }
 }

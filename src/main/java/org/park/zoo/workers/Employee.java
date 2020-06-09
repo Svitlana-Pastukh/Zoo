@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
@@ -74,6 +75,24 @@ public class Employee {
 
     public void setWorkedHours(int workedHours) {
         this.workedHours = workedHours;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return age == employee.age &&
+                salary == employee.salary &&
+                workedHours == employee.workedHours &&
+                employeeId.equals(employee.employeeId) &&
+                Objects.equals(name, employee.name) &&
+                Objects.equals(surname, employee.surname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(employeeId, name, surname, age, salary, workedHours);
     }
 }
 

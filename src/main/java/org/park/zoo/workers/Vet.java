@@ -14,6 +14,10 @@ public class Vet extends Employee {
     public Vet() {
     }
 
+    public Vet(String employeeId, String name, String surname, int age, int salary) {
+        super(employeeId, name, surname, age, salary);
+    }
+
     public void checkAnimal(Animal animal) {
 
         long currentTimeMinusThirty = minusThirtyDays(System.currentTimeMillis());
