@@ -59,7 +59,7 @@ class AnimalServiceImplTest {
     void selectAnimalWithIncorrectId() throws SQLException, JsonProcessingException {
         String a = "asd123";
         when(animalRepository.selectAnimalById(a)).thenReturn(null);
-        assertThrows(AnimalNotFound.class, () -> animalService.selectAnimalById(a), "Incorrect id");
+        assertThrows(AnimalNotFound.class, () -> animalService.selectAnimalById(a), "Correct id");
         verify(animalRepository, times(1)).selectAnimalById(a);
     }
 

@@ -34,7 +34,7 @@ public class AnimalExpertServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String id = req.getParameter("id");
             Animal animal = service.selectAnimalById(id);

@@ -3,6 +3,9 @@ package org.park.zoo.animals;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Zebra extends Animal implements Herbivorous {
 
     private static final Logger logger = LogManager.getLogger(Zebra.class);
