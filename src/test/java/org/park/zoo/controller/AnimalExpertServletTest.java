@@ -53,7 +53,7 @@ class AnimalExpertServletTest {
     }
 
     @Test
-    public void doPostExceptionNotFound() throws SQLException, IOException, AnimalNotFound {
+    public void doPostExceptionNotFoundAnimal() throws SQLException, IOException, AnimalNotFound {
         String id = "ca35c17";
         when(request.getParameter("id")).thenReturn(id);
         when(animalService.selectAnimalById(id)).thenThrow(AnimalNotFound.class);
@@ -69,6 +69,25 @@ class AnimalExpertServletTest {
         verify(response, times(1)).getWriter();
         verify(response, times(1)).setContentType("application/json");
         verify(response, times(1)).setCharacterEncoding("UTF-8");
-
     }
+
+    @Test
+    public void doPostExceptionNotFoundEmployee() throws AnimalNotFound, SQLException, IOException, AnimalDoesNotExist, EmployeeNotFound {
+        String id = "ca35c178-10e2-42a5-9cf2-23bf272892ec";
+        Animal giraffe = null;
+        when(request.getParameter("id")).thenReturn(id);
+        when(animalService.selectAnimalById(id)).thenReturn(giraffe);
+        when(animalService.feedAnimal(giraffe)).thenThrow(EmployeeNotFound.class);
+
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+        servlet.doPost(request, response);
+        assertEquals("Employee not found", stringWriter.toString());
+        verify(response, times(1)).setStatus(404);
+        verify(response, times(1)).getWriter();
+        verify(response, times(1)).setContentType("application/json");
+        verify(response, times(1)).setCharacterEncoding("UTF-8");
+    }
+
 }

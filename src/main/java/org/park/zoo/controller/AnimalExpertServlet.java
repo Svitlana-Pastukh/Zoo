@@ -46,7 +46,7 @@ public class AnimalExpertServlet extends HttpServlet {
             ServletUtils.setBody(resp, "Animal not found");
         } catch (EmployeeNotFound exception) {
             resp.setStatus(404);
-            ServletUtils.setBody(resp, "Employee not found ");
+            ServletUtils.setBody(resp, "Employee not found");
         } catch (SQLException | IOException exception) {
             logger.error(exception);
         }
